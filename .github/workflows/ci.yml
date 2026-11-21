@@ -26,7 +26,7 @@ jobs:
             echo "present=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@v7
         with:
           go-version: ${{ steps.module.outputs.present != 'true' && 'stable' || '' }}
           go-version-file: ${{ steps.module.outputs.present == 'true' && 'go.mod' || '' }}
