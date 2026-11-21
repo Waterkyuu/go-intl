@@ -1,0 +1,49 @@
+name: Go checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Detect the application module
+        id: module
+        run: |
+          if test -f go.mod; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: ${{ steps.module.outputs.present != 'true' && 'stable' || '' }}
+          go-version-file: ${{ steps.module.outputs.present == 'true' && 'go.mod' || '' }}
+          cache: false
+
+      - name: Test the Codex commit hook
+        run: go test -race .codex/hooks/*.go
+
+      - name: Lint Go packages
+        if: steps.module.outputs.present == 'true'
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.13.2
+
+      - name: Verify, test, and build Go packages
+        if: steps.module.outputs.present == 'true'
+        run: |
+          go mod verify
+          go test -race ./...
+          go build ./...
