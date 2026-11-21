@@ -15,6 +15,49 @@ t("Inbox.title") // "Inbox"
 
 A Bubble Tea model, a MyGo window, an NSGo view, a Wails app’s local Go backend, and an HTTP handler can each select a language from the same immutable catalog.
 
+## Performance
+
+The table shows median nanoseconds per translation across three runs on an Apple M3 Pro with Go 1.27.1 (darwin/arm64). The English catalog contains 1,024 static keys, a greeting and a plural. The tests reuse the translator or localizer and the argument maps.
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Operation</th>
+      <th scope="col">go-intl (ns/op)</th>
+      <th scope="col">go-i18n (ns/op)</th>
+      <th scope="col">Allocations/op (go-intl / go-i18n)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Repeated static key</td>
+      <td align="right"><strong>12.9</strong></td>
+      <td align="right">116.8</td>
+      <td align="right">0 / 0</td>
+    </tr>
+    <tr>
+      <td>Rotating static keys</td>
+      <td align="right"><strong>15.8</strong></td>
+      <td align="right">125.8</td>
+      <td align="right">0 / 0</td>
+    </tr>
+    <tr>
+      <td><code>Hello, Ada!</code> with a named argument</td>
+      <td align="right"><strong>66.2</strong></td>
+      <td align="right">288.2</td>
+      <td align="right">3 / 7</td>
+    </tr>
+    <tr>
+      <td><code>7 items</code> with an English plural</td>
+      <td align="right"><strong>81.2</strong></td>
+      <td align="right">336.5</td>
+      <td align="right">2 / 8</td>
+    </tr>
+  </tbody>
+</table>
+
+Binding the language once per view or request avoids repeated negotiation. A fresh argument map, a grouped number or a different language changes rendering cost. The report includes those measurements, startup costs, concurrency and reproduction commands. [Benchmark report](./PERFORMANCE.md)
+
 ## Get started
 
 The core package requires Go 1.25 or later. To try the example in a new module, run the commands below. In an existing Go module, run just the `go get` command.
@@ -194,19 +237,6 @@ go test ./...
 ```
 
 Run the HTTP example from the repository root with `go test -run ExampleCatalog_Match -v`. Run all core and CLI tests with `go test -race ./...`.
-
-## Performance
-
-The table shows median nanoseconds per translation across three runs on an Apple M3 Pro with Go 1.27.1 (darwin/arm64). The English catalog contains 1,024 static keys, a greeting and a plural. The tests reuse the translator or localizer and the argument maps.
-
-| Operation | go-intl (ns/op) | go-i18n (ns/op) | Allocations/op (go-intl / go-i18n) |
-| --- | ---: | ---: | ---: |
-| Repeated static key | 12.9 | 116.8 | 0 / 0 |
-| Rotating static keys | 15.8 | 125.8 | 0 / 0 |
-| `Hello, Ada!` with a named argument | 66.2 | 288.2 | 3 / 7 |
-| `7 items` with an English plural | 81.2 | 336.5 | 2 / 8 |
-
-Binding the language once per view or request avoids repeated negotiation. A fresh argument map, a grouped number or a different language changes rendering cost. The report includes those measurements, startup costs, concurrency and reproduction commands. [Benchmark report](./PERFORMANCE.md)
 
 The callable translator and message conventions follow next-intl. Go catalog extraction and merge follow the workflow familiar to go-i18n users. [next-intl translations](https://next-intl.dev/docs/usage/translations) · [go-i18n](https://github.com/nicksnyder/go-i18n)
 
