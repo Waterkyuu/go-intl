@@ -1,0 +1,42 @@
+name: Merge Dependabot updates
+
+on:
+  workflow_run:
+    workflows: ["Go checks"]
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  merge:
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.path == '.github/workflows/ci.yml' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      github.event.workflow_run.pull_requests[0].base.ref == 'main' &&
+      startsWith(github.event.workflow_run.head_branch, 'dependabot/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - name: Merge the tested Dependabot commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+          TESTED_SHA: ${{ github.event.workflow_run.head_sha }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          pr="repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER"
+          details=$(gh api "$pr")
+          if ! jq -e --arg repo "$GITHUB_REPOSITORY" --arg sha "$TESTED_SHA" --arg branch "$HEAD_BRANCH" '
+            .user.login == "dependabot[bot]" and .state == "open" and .draft == false and
+            .base.ref == "main" and .head.repo.full_name == $repo and
+            .head.ref == $branch and .head.sha == $sha
+          ' <<< "$details" >/dev/null; then
+            echo "PR is no longer eligible for this CI result."
+            exit 0
+          fi
+          gh api --method PUT "$pr/merge" -f sha="$TESTED_SHA" -f merge_method=merge \
+            -f commit_title="Merge main from $HEAD_BRANCH"
