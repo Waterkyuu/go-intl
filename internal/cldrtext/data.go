@@ -1,4 +1,4 @@
-// Code generated from Unicode CLDR 48.2.0 by generate.py. DO NOT EDIT.
+// Code generated from Unicode CLDR 48.2.0 by go generate. DO NOT EDIT.
 // Licensed under the Unicode License v3. See LICENSE.
 package cldrtext
 

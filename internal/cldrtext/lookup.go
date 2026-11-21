@@ -9,7 +9,7 @@ import (
 	"golang.org/x/text/language"
 )
 
-//go:generate python3 generate.py
+//go:generate go run ./gen
 
 // Table indexes one deduplicated CLDR locale row.
 type Table uint16
