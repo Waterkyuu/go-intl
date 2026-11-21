@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import Site from "../layouts/Site.astro";
+import Home from "../components/Home";
+
+const entries = await getCollection("docs");
+const guides = entries
+  .sort((a, b) => (a.data.sidebar.order ?? 0) - (b.data.sidebar.order ?? 0))
+  .map(({ id, data }) => ({
+    href: `/${id}/`,
+    title: data.title,
+    summary: data.description ?? "",
+  }));
+---
+
+<Site
+  title="High-performance internationalization for Go"
+  description="Share translations across terminal, desktop, and server applications with go-intl."
+>
+  <Home guides={guides} />
+</Site>
