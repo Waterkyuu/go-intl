@@ -1,4 +1,4 @@
-import { repository, type GuideLink } from "./navigation";
+import { repository, sitePath, type GuideLink } from "./navigation";
 
 export default function Home({ guides }: { guides: GuideLink[] }) {
   return (
@@ -22,11 +22,11 @@ export default function Home({ guides }: { guides: GuideLink[] }) {
             applications.
           </p>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-            <a href="/guides/get-started/" className="button">
+            <a href={sitePath("guides/get-started/")} className="button">
               Get started
             </a>
             <a
-              href="/guides/performance/"
+              href={sitePath("guides/performance/")}
               className="text-primary hover:underline"
             >
               View benchmarks <span aria-hidden="true">›</span>
@@ -34,8 +34,8 @@ export default function Home({ guides }: { guides: GuideLink[] }) {
           </div>
         </div>
         <img
-          src="/hemisphere.webp"
-          srcSet="/hemisphere-864.webp 864w, /hemisphere.webp 2172w"
+          src={sitePath("hemisphere.webp")}
+          srcSet={`${sitePath("hemisphere-864.webp")} 864w, ${sitePath("hemisphere.webp")} 2172w`}
           sizes="min(104vw, 1360px)"
           width="2172"
           height="724"
@@ -59,7 +59,7 @@ export default function Home({ guides }: { guides: GuideLink[] }) {
               message.
             </p>
             <a
-              href="/guides/performance/"
+              href={sitePath("guides/performance/")}
               className="mt-5 inline-block text-action-light hover:underline"
             >
               Explore the results <span aria-hidden="true">›</span>

@@ -1,4 +1,4 @@
-import { repository } from "./navigation";
+import { repository, sitePath } from "./navigation";
 
 export function GlobeMark() {
   return (
@@ -20,15 +20,18 @@ export function GlobeMark() {
 
 export function Header() {
   const tabs = [
-    ["Overview", "/", "overview"],
-    ["Documentation", "/guides/get-started/", "guides"],
-    ["Benchmarks", "/guides/performance/", "performance"],
+    ["Overview", "", "overview"],
+    ["Documentation", "guides/get-started/", "guides"],
+    ["Benchmarks", "guides/performance/", "performance"],
   ];
   return (
     <header>
       <div className="bg-black text-white">
         <div className="frame flex h-11 items-center justify-between text-xs">
-          <a className="flex items-center gap-2 font-semibold" href="/">
+          <a
+            className="flex items-center gap-2 font-semibold"
+            href={sitePath()}
+          >
             <GlobeMark />
             <span className="text-base">go-intl</span>
           </a>
@@ -39,14 +42,17 @@ export function Header() {
       </div>
       <nav aria-label="Main" className="border-b border-hairline bg-pearl">
         <div className="frame flex min-h-[52px] flex-wrap items-center justify-between gap-x-5 gap-y-2 py-2">
-          <a href="/" className="text-[21px] font-semibold tracking-tight">
+          <a
+            href={sitePath()}
+            className="text-[21px] font-semibold tracking-tight"
+          >
             go-intl Docs
           </a>
           <div className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
             {tabs.map(([title, href, group]) => (
               <a
                 key={href}
-                href={href}
+                href={sitePath(href)}
                 aria-current={group === "overview" ? "page" : undefined}
                 className={
                   group === "overview" ? "text-primary" : "hover:text-primary"
@@ -66,11 +72,11 @@ export function Footer() {
   return (
     <footer className="border-t border-hairline bg-parchment py-8 text-sm">
       <div className="frame flex flex-wrap items-center justify-between gap-4">
-        <a href="/" className="font-semibold">
+        <a href={sitePath()} className="font-semibold">
           go-intl
         </a>
         <div className="flex flex-wrap gap-5">
-          <a href="/guides/get-started/">Documentation</a>
+          <a href={sitePath("guides/get-started/")}>Documentation</a>
           <a href={`${repository}/releases/tag/v0.1.0`}>Release notes</a>
           <a href={repository}>GitHub ↗</a>
         </div>
