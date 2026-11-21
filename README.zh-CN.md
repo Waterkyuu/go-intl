@@ -17,44 +17,9 @@ Bubble Tea 模型、MyGo 窗口、NSGo 视图、Wails 应用的本地 Go 后端�
 
 ## 性能
 
-下表是三轮测试的中位数，单位为纳秒/次。测试环境为 Apple M3 Pro、Go 1.27.1（darwin/arm64）。英文目录包含 1,024 个静态键、一条问候语和一条复数消息。对比双方均复用已绑定的翻译器和参数 map。
+图中耗时取三轮测试的中位数，单位为纳秒/次。测试环境为 Apple M3 Pro、Go 1.27.1（darwin/arm64）。英文目录包含 1,024 个静态键、一条问候语和一条复数消息。对比双方均复用已绑定的翻译器和参数 map。
 
-<table>
-  <thead>
-    <tr>
-      <th scope="col">操作</th>
-      <th scope="col">go-intl（ns/op）</th>
-      <th scope="col">go-i18n（ns/op）</th>
-      <th scope="col">每次分配数（go-intl / go-i18n）</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>重复读取同一个静态键</td>
-      <td align="right"><strong>12.9</strong></td>
-      <td align="right">116.8</td>
-      <td align="right">0 / 0</td>
-    </tr>
-    <tr>
-      <td>轮流读取不同静态键</td>
-      <td align="right"><strong>15.8</strong></td>
-      <td align="right">125.8</td>
-      <td align="right">0 / 0</td>
-    </tr>
-    <tr>
-      <td>插入姓名，输出 <code>Hello, Ada!</code></td>
-      <td align="right"><strong>66.2</strong></td>
-      <td align="right">288.2</td>
-      <td align="right">3 / 7</td>
-    </tr>
-    <tr>
-      <td>按英文复数规则输出 <code>7 items</code></td>
-      <td align="right"><strong>81.2</strong></td>
-      <td align="right">336.5</td>
-      <td align="right">2 / 8</td>
-    </tr>
-  </tbody>
-</table>
+<img src="./assets/benchmark.zh-CN.svg" width="640" alt="go-intl / go-i18n（ns/op）：重复读取同一静态键: 12.9 / 116.8；轮流读取静态键: 15.8 / 125.8；问候语插入姓名: 66.2 / 288.2；英文复数（数量为 7）: 81.2 / 336.5"/>
 
 在视图或请求开始时绑定一次语言，可以省去每次翻译时的语言协商。每次新建参数 map、格式化带千位分隔符的数字或改用其他语言，都会影响耗时。完整报告还包含这些场景的测量结果、启动成本、并发吞吐量和复现命令。[性能报告](./PERFORMANCE.md)
 
