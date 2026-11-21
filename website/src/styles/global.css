@@ -34,7 +34,7 @@ body {
   clip: auto;
 }
 .hero {
-  padding-block: clamp(40px, 6vw, 80px);
+  padding-top: clamp(40px, 6vw, 80px);
 }
 .hero-title {
   font-size: clamp(32px, 4.5vw, 56px);
@@ -48,9 +48,5 @@ body {
 @media (max-width: 767px) {
   .frame {
     width: calc(100% - 40px);
-  }
-  .hero img {
-    max-width: 500px;
-    margin-inline: auto;
   }
 }

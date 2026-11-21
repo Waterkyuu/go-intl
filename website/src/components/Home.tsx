@@ -4,10 +4,10 @@ export default function Home({ guides }: { guides: GuideLink[] }) {
   return (
     <>
       <section
-        className="frame hero grid items-center gap-2 md:grid-cols-2"
+        className="hero flex flex-col items-center overflow-hidden text-center"
         aria-labelledby="hero-title"
       >
-        <div className="relative z-1 py-3">
+        <div className="frame flex flex-col items-center">
           <a
             className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
             href={`${repository}/releases/tag/v0.1.0`}
@@ -15,15 +15,13 @@ export default function Home({ guides }: { guides: GuideLink[] }) {
             go-intl v0.1.0 <span aria-hidden="true">↗</span>
           </a>
           <h1 id="hero-title" className="hero-title">
-            Internationalization
-            <br />
-            for Go.
+            Internationalization for Go.
           </h1>
-          <p className="mt-5 max-w-[460px] text-[21px] leading-[1.35] text-secondary">
+          <p className="mt-5 max-w-[580px] text-[21px] leading-[1.35] text-balance text-secondary">
             One translation catalog for your terminal, desktop, and server
             applications.
           </p>
-          <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
             <a href="/guides/get-started/" className="button">
               Get started
             </a>
@@ -36,12 +34,14 @@ export default function Home({ guides }: { guides: GuideLink[] }) {
           </div>
         </div>
         <img
-          src="/language-globe.webp"
-          width="1080"
-          height="720"
+          src="/hemisphere.webp"
+          srcSet="/hemisphere-864.webp 864w, /hemisphere.webp 2172w"
+          sizes="min(104vw, 1360px)"
+          width="2172"
+          height="724"
           fetchPriority="high"
-          alt="A silver globe with three language keycaps"
-          className="block w-full"
+          alt=""
+          className="mt-8 block h-auto w-[min(104vw,1360px)] max-w-none md:mt-12"
         />
       </section>
       <section className="bg-tile text-white" aria-labelledby="bench-title">
