@@ -13,7 +13,7 @@ t := catalog.Translations("en")
 t("Inbox.title") // "Inbox"
 ```
 
-Bubble Tea 模型、MyGo 窗口、NSGo 视图和 HTTP 请求可以各自选择语言，共享同一个只读的翻译目录。
+Bubble Tea 模型、MyGo 窗口、NSGo 视图、Wails 应用的本地 Go 后端和 HTTP 处理函数都可以各自选择语言，共享同一个只读的翻译目录。
 
 ## 快速开始
 

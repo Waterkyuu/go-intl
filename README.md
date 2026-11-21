@@ -13,7 +13,7 @@ t := catalog.Translations("en")
 t("Inbox.title") // "Inbox"
 ```
 
-A Bubble Tea model, a MyGo window, an NSGo view, and an HTTP request can each select a different language from the same immutable catalog.
+A Bubble Tea model, a MyGo window, an NSGo view, a Wails app’s local Go backend, and an HTTP handler can each select a language from the same immutable catalog.
 
 ## Get started
 

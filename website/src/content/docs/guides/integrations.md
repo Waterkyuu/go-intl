@@ -1,6 +1,6 @@
 ---
 title: Client and server integrations
-description: Share translations across Bubble Tea, MyGo, NSGo, and HTTP.
+description: Share translations across Bubble Tea, MyGo, NSGo, Wails, and HTTP.
 sidebar:
   order: 4
 ---
@@ -22,6 +22,27 @@ go run ./bubbletea -locale es
 go run ./mygo -locale es
 go run ./nsgo -locale es
 ```
+
+## Wails local Go backend
+
+Keep an `intl.Translator` on the Go backend and return translated strings to the web frontend. For example, in a Wails v2 app, add a `t intl.Translator` field to the existing `App` struct. Initialize it with `catalog.Translations("fr")` when constructing the instance passed to `options.App.Bind`.
+
+```go
+// InboxTitle returns the localized title for the inbox view.
+func (a *App) InboxTitle() string {
+    return a.t("Inbox.title")
+}
+```
+
+In a frontend module under `frontend/src/`, call the generated binding. With the catalog from the quick start, the French translator returns `Inbox` through English fallback.
+
+```js
+import { InboxTitle } from "../wailsjs/go/main/App.js";
+
+const title = await InboxTitle();
+```
+
+Wails generates the binding when you run `wails dev`. [Wails v2 method binding](https://v2.wails.io/docs/v2.15.0/howdoesitwork/#method-binding)
 
 ## HTTP language negotiation
 
