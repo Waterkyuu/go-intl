@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  --color-primary: #0066cc;
+  --color-focus: #0071e3;
+  --color-action-light: #2997ff;
+  --color-ink: #1d1d1f;
+  --color-secondary: #333333;
+  --color-muted: #cccccc;
+  --color-hairline: #e0e0e0;
+  --color-parchment: #f5f5f7;
+  --color-pearl: #fafafc;
+  --color-tile: #272729;
+}
+
+body {
+  @apply bg-white font-sans text-ink antialiased;
+}
+.frame {
+  width: min(1200px, calc(100% - 64px));
+  margin-inline: auto;
+}
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 4px;
+}
+.skip {
+  @apply sr-only;
+}
+.skip:focus {
+  @apply fixed top-2 left-2 z-50 h-auto w-auto overflow-visible rounded-md bg-white p-3;
+  clip: auto;
+}
+.hero {
+  padding-block: clamp(40px, 6vw, 80px);
+}
+.hero-title {
+  font-size: clamp(32px, 4.5vw, 56px);
+  line-height: 1.07;
+  letter-spacing: -0.028em;
+  font-weight: 600;
+}
+.button {
+  @apply inline-flex items-center justify-center rounded-full bg-primary px-[22px] py-[11px] text-[17px] text-white hover:bg-focus;
+}
+@media (max-width: 767px) {
+  .frame {
+    width: calc(100% - 40px);
+  }
+  .hero img {
+    max-width: 500px;
+    margin-inline: auto;
+  }
+}
