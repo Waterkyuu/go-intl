@@ -6,7 +6,14 @@
   <p><a href="./README.md">English</a> | <strong>简体中文</strong></p>
 </div>
 
-先选好语言，渲染时直接调用 `t("key")`。Bubble Tea 模型、MyGo 窗口、NSGo 视图和 HTTP 请求可以各自选择语言，共享同一个只读的翻译目录。
+选一次语言，之后按键取译文。
+
+```go
+t := catalog.Translations("en")
+t("Inbox.title") // "Inbox"
+```
+
+Bubble Tea 模型、MyGo 窗口、NSGo 视图和 HTTP 请求可以各自选择语言，共享同一个只读的翻译目录。
 
 ## 快速开始
 

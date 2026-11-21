@@ -6,7 +6,14 @@
   <p><strong>English</strong> | <a href="./README.zh-CN.md">简体中文</a></p>
 </div>
 
-Select a language once, then call `t("key")` wherever you render text. A Bubble Tea model, a MyGo window, an NSGo view, and an HTTP request can each select a different language from the same immutable catalog.
+Pick a language once, then translate by key.
+
+```go
+t := catalog.Translations("en")
+t("Inbox.title") // "Inbox"
+```
+
+A Bubble Tea model, a MyGo window, an NSGo view, and an HTTP request can each select a different language from the same immutable catalog.
 
 ## Get started
 
