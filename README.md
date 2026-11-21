@@ -5,7 +5,7 @@
   <p><strong>English</strong> | <a href="./README.zh-CN.md">简体中文</a></p>
 </div>
 
-Bind a language and namespace once, then call `t("key")` wherever you render text. A Bubble Tea model, a MyGo window, and an HTTP request can each select a different language from the same immutable catalog.
+Bind a language and namespace once, then call `t("key")` wherever you render text. A Bubble Tea model, a MyGo window, an NSGo view, and an HTTP request can each select a different language from the same immutable catalog.
 
 ## Get started
 
@@ -162,12 +162,13 @@ Extraction reads Go syntax and supports import aliases. It expects a literal lan
 
 ## Runnable integrations
 
-The client examples live in a separate Go module to keep the core independent of UI frameworks. Both examples share one English and Spanish message definition and include headless view tests. The client module requires Go 1.27.3 or later.
+The client examples live in a separate Go module to keep the core independent of UI frameworks. All three examples share one English and Spanish message definition and include headless view tests. The client module requires Go 1.27.3 or later.
 
 ```sh
 cd examples/clients
 go run ./bubbletea -locale es
 go run ./mygo -locale es
+go run ./nsgo -locale es
 go test ./...
 ```
 

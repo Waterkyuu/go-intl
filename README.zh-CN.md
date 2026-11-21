@@ -5,7 +5,7 @@
   <p><a href="./README.md">English</a> | <strong>简体中文</strong></p>
 </div>
 
-先选好语言和命名空间，渲染时直接调用 `t("key")`。Bubble Tea 模型、MyGo 窗口和 HTTP 请求可以各自选择语言，共享同一个只读的翻译目录。
+先选好语言和命名空间，渲染时直接调用 `t("key")`。Bubble Tea 模型、MyGo 窗口、NSGo 视图和 HTTP 请求可以各自选择语言，共享同一个只读的翻译目录。
 
 ## 快速开始
 
@@ -162,12 +162,13 @@ go run ./cmd/go-intl merge -base "$catalogs/en.json" "$catalogs/es.json"
 
 ## 运行客户端和服务端示例
 
-两个客户端示例位于独立的 Go 模块中，共用一份英文和西班牙文翻译，核心库可以独立于 UI 框架使用。该示例模块需要 Go 1.27.3 或更高版本。两套界面都有无需打开窗口的测试。
+三个客户端示例位于独立的 Go 模块中，共用一份英文和西班牙文翻译，核心库可以独立于 UI 框架使用。该示例模块需要 Go 1.27.3 或更高版本。三个示例都有无需打开窗口的测试。
 
 ```sh
 cd examples/clients
 go run ./bubbletea -locale es
 go run ./mygo -locale es
+go run ./nsgo -locale es
 go test ./...
 ```
 
