@@ -41,7 +41,7 @@ export default function Home({ guides }: { guides: GuideLink[] }) {
           height="724"
           fetchPriority="high"
           alt=""
-          className="mt-8 block h-auto w-[min(104vw,1360px)] max-w-none md:mt-12"
+          className="mt-8 block aspect-[6/1] h-auto w-[min(104vw,1360px)] max-w-none object-cover object-top md:mt-12"
         />
       </section>
       <section className="bg-tile text-white" aria-labelledby="bench-title">
