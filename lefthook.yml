@@ -5,7 +5,11 @@ pre-commit:
       glob: "*.go"
       run: golangci-lint fmt {staged_files}
       stage_fixed: true
+    codex-hook-tests:
+      glob: '.codex/hooks/*.go'
+      run: go test .codex/hooks/*.go
     go-lint:
+      exclude: '.codex/hooks/*.go'
       priority: 2
       glob:
         - "*.go"
