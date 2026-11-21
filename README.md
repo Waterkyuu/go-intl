@@ -204,3 +204,11 @@ The table shows median nanoseconds per translation across three runs on an Apple
 Binding the language once per view or request avoids repeated negotiation. A fresh argument map, a grouped number or a different language changes rendering cost. The report includes those measurements, startup costs, concurrency and reproduction commands. [Benchmark report](./PERFORMANCE.md)
 
 The callable translator and message conventions follow next-intl. Go catalog extraction and merge follow the workflow familiar to go-i18n users. [next-intl translations](https://next-intl.dev/docs/usage/translations) · [go-i18n](https://github.com/nicksnyder/go-i18n)
+
+## Contributing
+
+To report a bug, submit a patch, or benchmark a change, start with the [contributing guide](CONTRIBUTING.md). For community concerns, see the [code of conduct](CODE_OF_CONDUCT.md). To report a vulnerability privately, follow the [security policy](SECURITY.md).
+
+## License
+
+go-intl is available under the [MIT License](LICENSE). The generated CLDR data carries the [Unicode License v3](internal/cldrtext/LICENSE).

@@ -204,3 +204,11 @@ go test ./...
 在视图或请求开始时绑定一次语言，可以省去每次翻译时的语言协商。每次新建参数 map、格式化带千位分隔符的数字或改用其他语言，都会影响耗时。完整报告还包含这些场景的测量结果、启动成本、并发吞吐量和复现命令。[性能报告](./PERFORMANCE.md)
 
 翻译函数的调用方式和消息语法参考了 next-intl。Go 翻译目录的提取与合并沿用了 go-i18n 用户熟悉的工作流程。[next-intl 翻译 API](https://next-intl.dev/docs/usage/translations) · [go-i18n](https://github.com/nicksnyder/go-i18n)
+
+## 参与贡献
+
+欢迎报告问题、提交补丁或改进性能。[贡献指南](CONTRIBUTING.md) 说明了如何运行测试、对比基准结果和提交拉取请求。参与社区讨论时请遵守[行为准则](CODE_OF_CONDUCT.md)。如需私下报告安全漏洞，请参阅[安全报告指引](SECURITY.md)。
+
+## 许可证
+
+go-intl 使用 [MIT 许可证](LICENSE)。生成的 CLDR 数据使用 [Unicode 许可证 v3](internal/cldrtext/LICENSE)。
