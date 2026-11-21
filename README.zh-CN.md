@@ -10,15 +10,13 @@
 
 ## 快速开始
 
-核心库需要 Go 1.25 或更高版本。在本地仓库根目录执行以下命令，会在同级目录创建一个示例模块。Go 将从当前仓库读取 go-intl 源码。
+核心库需要 Go 1.25 或更高版本。运行以下命令创建示例模块。如果项目已有 `go.mod`，在项目目录执行最后一行 `go get` 即可。
 
 ```sh
-checkout=$(pwd)
-mkdir ../intl-demo
-cd ../intl-demo
+mkdir intl-demo
+cd intl-demo
 go mod init example.com/intl-demo
-go mod edit -replace "github.com/waterkyuu/go-intl=$checkout"
-go get github.com/waterkyuu/go-intl@v0.0.0
+go get github.com/waterkyuu/go-intl@v0.1.0
 ```
 
 将下面的程序保存为示例模块的 `main.go`，然后运行 `go run .`。导入路径以 `go-intl` 结尾，代码中的包名为 `intl`。

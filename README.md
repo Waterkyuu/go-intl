@@ -10,15 +10,13 @@ Select a language once, then call `t("key")` wherever you render text. A Bubble 
 
 ## Get started
 
-The core package requires Go 1.25 or later. To try it with a local checkout, run these commands from the repository root. They create a sibling demo module. The local replacement resolves the dependency directly from your checkout.
+The core package requires Go 1.25 or later. To try the example in a new module, run the commands below. In an existing Go module, run just the `go get` command.
 
 ```sh
-checkout=$(pwd)
-mkdir ../intl-demo
-cd ../intl-demo
+mkdir intl-demo
+cd intl-demo
 go mod init example.com/intl-demo
-go mod edit -replace "github.com/waterkyuu/go-intl=$checkout"
-go get github.com/waterkyuu/go-intl@v0.0.0
+go get github.com/waterkyuu/go-intl@v0.1.0
 ```
 
 Save this program as `main.go` in the demo module and run `go run .`. The import path ends in `go-intl` and the package name is `intl`.
