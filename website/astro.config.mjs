@@ -7,6 +7,11 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "go-intl Docs",
+      favicon: "/favicon.png",
+      components: { Head: "./src/components/DocsHead.astro" },
+      head: [
+        { tag: "meta", attrs: { name: "twitter:card", content: "summary" } },
+      ],
       social: [
         {
           icon: "github",
