@@ -1,0 +1,13 @@
+:root {
+  --sl-font:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, sans-serif;
+  --sl-color-accent: #2997ff;
+  --sl-color-text-accent: #2997ff;
+}
+:root[data-theme="light"] {
+  --sl-color-accent: #0066cc;
+  --sl-color-text-accent: #0066cc;
+  --sl-color-bg-nav: #fafafc;
+  --sl-color-text: #1d1d1f;
+  --sl-color-hairline-light: #e0e0e0;
+}
