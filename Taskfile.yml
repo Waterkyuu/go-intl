@@ -6,9 +6,10 @@ tasks:
       - task --list
 
   hooks:
-    desc: Install Git hooks for this clone
+    desc: Enable the tracked Git hooks for this clone
     cmds:
-      - lefthook install
+      - lefthook validate
+      - git config --local core.hooksPath .githooks
 
   fmt:
     desc: Format Go source files and imports

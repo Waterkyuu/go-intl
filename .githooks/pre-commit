@@ -1,0 +1,2 @@
+#!/bin/sh
+exec lefthook run pre-commit --no-auto-install "$@"
