@@ -1,0 +1,55 @@
+version: "3"
+
+tasks:
+  default:
+    cmds:
+      - task --list
+
+  hooks:
+    desc: Install Git hooks for this clone
+    cmds:
+      - lefthook install
+
+  fmt:
+    desc: Format Go source files and imports
+    cmds:
+      - golangci-lint fmt ./...
+
+  lint:
+    desc: Run Go static checks
+    cmds:
+      - golangci-lint run ./...
+
+  lint-fix:
+    desc: Apply available Go lint fixes
+    cmds:
+      - golangci-lint run --fix ./...
+
+  test:
+    desc: Run all Go tests
+    cmds:
+      - go test ./...
+
+  test-pkg:
+    desc: Run tests for one Go package (task test-pkg PKG=./path)
+    requires:
+      vars: [PKG]
+    env:
+      GO_TEST_PACKAGE: '{{.PKG}}'
+    cmds:
+      - go test "$GO_TEST_PACKAGE"
+
+  test-cover:
+    desc: Show test coverage by package
+    cmds:
+      - go test -cover ./...
+
+  build:
+    desc: Build all Go packages
+    cmds:
+      - go build ./...
+
+  tidy:
+    desc: Tidy Go module dependencies
+    cmds:
+      - go mod tidy
