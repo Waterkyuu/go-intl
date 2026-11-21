@@ -1,6 +1,6 @@
 ---
 title: Client and server integrations
-description: Share translations across Bubble Tea, MyGo, NSGo, Wails, and HTTP.
+description: Share Go translations across Bubble Tea, MyGo, NSGo, Wails backends, and HTTP handlers using Accept-Language.
 sidebar:
   order: 4
 ---

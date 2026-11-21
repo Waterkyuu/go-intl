@@ -1,6 +1,6 @@
 ---
 title: Messages and formatting
-description: Write placeholders, conditional messages, and locale-aware plurals.
+description: Format Go messages with named arguments, select branches, plurals, rich text, and localized numbers and dates.
 sidebar:
   order: 3
 ---

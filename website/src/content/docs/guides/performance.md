@@ -1,6 +1,6 @@
 ---
 title: Performance
-description: Compare rendering costs and reproduce the measurements.
+description: Compare go-intl and go-i18n lookup, interpolation, and plural benchmarks in ns/op and allocations per call.
 sidebar:
   order: 6
 ---

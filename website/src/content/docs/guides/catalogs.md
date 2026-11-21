@@ -1,6 +1,6 @@
 ---
 title: Translation files
-description: Load Go, JSON, TOML, YAML, and CSV into a shared catalog.
+description: Load translations from Go, JSON, TOML, YAML, or CSV and embed locale files in a Go binary.
 sidebar:
   order: 2
 ---

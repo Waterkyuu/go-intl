@@ -1,6 +1,6 @@
 ---
 title: Catalog CLI
-description: Extract source messages, check catalogs, and merge missing keys.
+description: Use the go-intl CLI to extract Go messages, check translations in CI, and merge missing catalog keys.
 sidebar:
   order: 5
 ---

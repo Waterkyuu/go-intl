@@ -1,6 +1,6 @@
 ---
 title: Get started
-description: Install go-intl and translate your first message.
+description: Install go-intl, render your first Go translation, and configure fallback languages and optional namespaces.
 sidebar:
   order: 1
 ---
