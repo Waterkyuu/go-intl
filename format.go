@@ -1,11 +1,9 @@
 package intl
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/bep/golocales"
-	"golang.org/x/text/currency"
 	"golang.org/x/text/language"
 	"golang.org/x/text/language/display"
 	"golang.org/x/text/number"
@@ -80,16 +78,6 @@ func (l Locale) Number(value float64) string {
 // Percent displays a ratio as a percentage, so 0.25 denotes 25 percent.
 func (l Locale) Percent(ratio float64) string {
 	return l.catalog.locales[l.chain[0]].printer.Sprint(number.Percent(ratio))
-}
-
-// Currency formats an amount in major units with ISO 4217 currency precision.
-func (l Locale) Currency(amount float64, code string) (string, error) {
-	unit, err := currency.ParseISO(code)
-	if err != nil {
-		return "", fmt.Errorf("currency %q: %w", code, err)
-	}
-	digits, _ := currency.Standard.Rounding(unit)
-	return l.catalog.locales[l.chain[0]].dates.FormatCurrency(amount, digits, unit.String()), nil
 }
 
 // LanguageName gives the name of a language in the selected UI language.
