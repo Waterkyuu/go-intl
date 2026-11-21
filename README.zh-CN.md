@@ -5,7 +5,7 @@
   <p><a href="./README.md">English</a> | <strong>简体中文</strong></p>
 </div>
 
-先选好语言和命名空间，渲染时直接调用 `t("key")`。Bubble Tea 模型、MyGo 窗口、NSGo 视图和 HTTP 请求可以各自选择语言，共享同一个只读的翻译目录。
+先选好语言，渲染时直接调用 `t("key")`。Bubble Tea 模型、MyGo 窗口、NSGo 视图和 HTTP 请求可以各自选择语言，共享同一个只读的翻译目录。
 
 ## 快速开始
 
@@ -33,23 +33,33 @@ import (
 )
 
 func main() {
-	catalog, err := intl.New("en", intl.Define("en", map[string]string{
-		"Inbox.title": "Inbox",
-		"Inbox.hello": "Hello, {name}!",
-		"Inbox.count": "{n, plural, =0 {No unread messages} one {# unread message} other {# unread messages}}",
-		"Inbox.state": "{online, select, true {Online} other {Offline}}",
-	}))
+	catalog, err := intl.New("en",
+		intl.Define("en", map[string]string{
+			"Inbox.title": "Inbox",
+			"hello":       "Hello, {name}!",
+			"Inbox.count": "{n, plural, =0 {No unread messages} one {# unread message} other {# unread messages}}",
+			"Inbox.state": "{online, select, true {Online} other {Offline}}",
+		}),
+		intl.Define("fr", map[string]string{
+			"Inbox.title": "Boîte de réception",
+			"hello":       "Bonjour, {name} !",
+		}),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	t := catalog.Translations("en", "Inbox")
-	fmt.Println(t("title"))                              // Inbox
-	fmt.Println(t("hello", intl.Values{"name": "Ada"}))  // Hello, Ada!
-	fmt.Println(t("count", intl.Values{"n": 2}))         // 2 unread messages
-	fmt.Println(t("state", intl.Values{"online": true})) // Online
+	t := catalog.Translations("fr")
+	fmt.Println(t("Inbox.title"))                              // Boîte de réception
+	fmt.Println(t("hello", intl.Values{"name": "Ada"}))        // Bonjour, Ada !
+	fmt.Println(t("Inbox.count", intl.Values{"n": 2}))         // 2 unread messages
+	fmt.Println(t("Inbox.state", intl.Values{"online": true})) // Online
 }
 ```
+
+`intl.New` 的第一个参数设置回退语言。这里传入 `"en"`，所以法语目录缺少的两个键会使用英语译文。要更换回退语言，传入目标语言标签，并为该语言提供翻译源。
+
+命名空间是可选的。同一个翻译函数可以直接读取顶层键 `t("hello")`，也可以读取完整键 `t("Inbox.title")`。如果一个视图只用收件箱里的消息，可以用 `inbox := catalog.Translations("fr", "Inbox")` 简写为 `inbox("title")`。
 
 ## 翻译文件
 
@@ -185,6 +195,6 @@ go test ./...
 | 插入姓名，输出 `Hello, Ada!` | 66.2 | 288.2 | 3 / 7 |
 | 按英文复数规则输出 `7 items` | 81.2 | 336.5 | 2 / 8 |
 
-在视图或请求开始时绑定一次语言和命名空间，可以省去每次翻译时的语言协商。每次新建参数 map、格式化带千位分隔符的数字或改用其他语言，都会影响耗时。完整报告还包含这些场景的测量结果、启动成本、并发吞吐量和复现命令。[性能报告](./PERFORMANCE.md)
+在视图或请求开始时绑定一次语言，可以省去每次翻译时的语言协商。每次新建参数 map、格式化带千位分隔符的数字或改用其他语言，都会影响耗时。完整报告还包含这些场景的测量结果、启动成本、并发吞吐量和复现命令。[性能报告](./PERFORMANCE.md)
 
 翻译函数的调用方式和消息语法参考了 next-intl。Go 翻译目录的提取与合并沿用了 go-i18n 用户熟悉的工作流程。[next-intl 翻译 API](https://next-intl.dev/docs/usage/translations) · [go-i18n](https://github.com/nicksnyder/go-i18n)

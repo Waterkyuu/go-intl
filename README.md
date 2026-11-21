@@ -5,7 +5,7 @@
   <p><strong>English</strong> | <a href="./README.zh-CN.md">简体中文</a></p>
 </div>
 
-Bind a language and namespace once, then call `t("key")` wherever you render text. A Bubble Tea model, a MyGo window, an NSGo view, and an HTTP request can each select a different language from the same immutable catalog.
+Select a language once, then call `t("key")` wherever you render text. A Bubble Tea model, a MyGo window, an NSGo view, and an HTTP request can each select a different language from the same immutable catalog.
 
 ## Get started
 
@@ -33,23 +33,33 @@ import (
 )
 
 func main() {
-	catalog, err := intl.New("en", intl.Define("en", map[string]string{
-		"Inbox.title": "Inbox",
-		"Inbox.hello": "Hello, {name}!",
-		"Inbox.count": "{n, plural, =0 {No unread messages} one {# unread message} other {# unread messages}}",
-		"Inbox.state": "{online, select, true {Online} other {Offline}}",
-	}))
+	catalog, err := intl.New("en",
+		intl.Define("en", map[string]string{
+			"Inbox.title": "Inbox",
+			"hello":       "Hello, {name}!",
+			"Inbox.count": "{n, plural, =0 {No unread messages} one {# unread message} other {# unread messages}}",
+			"Inbox.state": "{online, select, true {Online} other {Offline}}",
+		}),
+		intl.Define("fr", map[string]string{
+			"Inbox.title": "Boîte de réception",
+			"hello":       "Bonjour, {name} !",
+		}),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	t := catalog.Translations("en", "Inbox")
-	fmt.Println(t("title"))                              // Inbox
-	fmt.Println(t("hello", intl.Values{"name": "Ada"}))  // Hello, Ada!
-	fmt.Println(t("count", intl.Values{"n": 2}))         // 2 unread messages
-	fmt.Println(t("state", intl.Values{"online": true})) // Online
+	t := catalog.Translations("fr")
+	fmt.Println(t("Inbox.title"))                              // Boîte de réception
+	fmt.Println(t("hello", intl.Values{"name": "Ada"}))        // Bonjour, Ada !
+	fmt.Println(t("Inbox.count", intl.Values{"n": 2}))         // 2 unread messages
+	fmt.Println(t("Inbox.state", intl.Values{"online": true})) // Online
 }
 ```
+
+The first argument to `intl.New` sets the fallback language. Here, `"en"` supplies the two keys missing from the French catalog. To change the fallback, pass the desired language tag and include a source for that language.
+
+Namespaces are optional. The same translator accepts a top-level key like `t("hello")` and a dotted key like `t("Inbox.title")`. If a view only uses inbox messages, `inbox := catalog.Translations("fr", "Inbox")` lets it call `inbox("title")`.
 
 ## Translation files
 
@@ -185,6 +195,6 @@ The table shows median nanoseconds per translation across three runs on an Apple
 | `Hello, Ada!` with a named argument | 66.2 | 288.2 | 3 / 7 |
 | `7 items` with an English plural | 81.2 | 336.5 | 2 / 8 |
 
-Binding language and namespace once per view or request avoids repeated negotiation. A fresh argument map, a grouped number or a different language changes rendering cost. The report includes those measurements, startup costs, concurrency and reproduction commands. [Benchmark report](./PERFORMANCE.md)
+Binding the language once per view or request avoids repeated negotiation. A fresh argument map, a grouped number or a different language changes rendering cost. The report includes those measurements, startup costs, concurrency and reproduction commands. [Benchmark report](./PERFORMANCE.md)
 
 The callable translator and message conventions follow next-intl. Go catalog extraction and merge follow the workflow familiar to go-i18n users. [next-intl translations](https://next-intl.dev/docs/usage/translations) · [go-i18n](https://github.com/nicksnyder/go-i18n)
