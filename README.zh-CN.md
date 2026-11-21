@@ -36,30 +36,35 @@ func main() {
 	catalog, err := intl.New("en",
 		intl.Define("en", map[string]string{
 			"Inbox.title": "Inbox",
-			"hello":       "Hello, {name}!",
+			"Inbox.hello": "Hello, {name}!",
 			"Inbox.count": "{n, plural, =0 {No unread messages} one {# unread message} other {# unread messages}}",
 			"Inbox.state": "{online, select, true {Online} other {Offline}}",
 		}),
 		intl.Define("fr", map[string]string{
 			"Inbox.title": "Boîte de réception",
-			"hello":       "Bonjour, {name} !",
 		}),
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	t := catalog.Translations("fr")
-	fmt.Println(t("Inbox.title"))                              // Boîte de réception
-	fmt.Println(t("hello", intl.Values{"name": "Ada"}))        // Bonjour, Ada !
-	fmt.Println(t("Inbox.count", intl.Values{"n": 2}))         // 2 unread messages
-	fmt.Println(t("Inbox.state", intl.Values{"online": true})) // Online
+	t := catalog.Translations("en", "Inbox")
+	fmt.Println(t("title"))                              // Inbox
+	fmt.Println(t("hello", intl.Values{"name": "Ada"}))  // Hello, Ada!
+	fmt.Println(t("count", intl.Values{"n": 2}))         // 2 unread messages
+	fmt.Println(t("state", intl.Values{"online": true})) // Online
 }
 ```
 
-`intl.New` 的第一个参数设置回退语言。这里传入 `"en"`，所以法语目录缺少的两个键会使用英语译文。要更换回退语言，传入目标语言标签，并为该语言提供翻译源。
+也可以省略命名空间，直接传入完整的键。下面的写法复用上面的翻译目录：
 
-命名空间是可选的。同一个翻译函数可以直接读取顶层键 `t("hello")`，也可以读取完整键 `t("Inbox.title")`。如果一个视图只用收件箱里的消息，可以用 `inbox := catalog.Translations("fr", "Inbox")` 简写为 `inbox("title")`。
+```go
+fr := catalog.Translations("fr")
+fmt.Println(fr("Inbox.title"))                      // Boîte de réception
+fmt.Println(fr("Inbox.count", intl.Values{"n": 2})) // 2 unread messages
+```
+
+`intl.New` 的第一个参数设置回退语言。这里传入 `"en"`，所以法语目录缺少的 `Inbox.count` 会使用英语译文。要更换回退语言，传入目标语言标签，并为该语言提供翻译源。
 
 ## 翻译文件
 

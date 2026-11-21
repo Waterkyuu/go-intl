@@ -36,30 +36,35 @@ func main() {
 	catalog, err := intl.New("en",
 		intl.Define("en", map[string]string{
 			"Inbox.title": "Inbox",
-			"hello":       "Hello, {name}!",
+			"Inbox.hello": "Hello, {name}!",
 			"Inbox.count": "{n, plural, =0 {No unread messages} one {# unread message} other {# unread messages}}",
 			"Inbox.state": "{online, select, true {Online} other {Offline}}",
 		}),
 		intl.Define("fr", map[string]string{
 			"Inbox.title": "Boîte de réception",
-			"hello":       "Bonjour, {name} !",
 		}),
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	t := catalog.Translations("fr")
-	fmt.Println(t("Inbox.title"))                              // Boîte de réception
-	fmt.Println(t("hello", intl.Values{"name": "Ada"}))        // Bonjour, Ada !
-	fmt.Println(t("Inbox.count", intl.Values{"n": 2}))         // 2 unread messages
-	fmt.Println(t("Inbox.state", intl.Values{"online": true})) // Online
+	t := catalog.Translations("en", "Inbox")
+	fmt.Println(t("title"))                              // Inbox
+	fmt.Println(t("hello", intl.Values{"name": "Ada"}))  // Hello, Ada!
+	fmt.Println(t("count", intl.Values{"n": 2}))         // 2 unread messages
+	fmt.Println(t("state", intl.Values{"online": true})) // Online
 }
 ```
 
-The first argument to `intl.New` sets the fallback language. Here, `"en"` supplies the two keys missing from the French catalog. To change the fallback, pass the desired language tag and include a source for that language.
+To omit the namespace, pass the full key. This example uses the same catalog:
 
-Namespaces are optional. The same translator accepts a top-level key like `t("hello")` and a dotted key like `t("Inbox.title")`. If a view only uses inbox messages, `inbox := catalog.Translations("fr", "Inbox")` lets it call `inbox("title")`.
+```go
+fr := catalog.Translations("fr")
+fmt.Println(fr("Inbox.title"))                      // Boîte de réception
+fmt.Println(fr("Inbox.count", intl.Values{"n": 2})) // 2 unread messages
+```
+
+The first argument to `intl.New` sets the fallback language. Here, `"en"` supplies the missing French translation for `Inbox.count`. To change the fallback, pass the desired language tag and include a source for that language.
 
 ## Translation files
 
