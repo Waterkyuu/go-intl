@@ -2,6 +2,7 @@
   <img src="./assets/logo-go-intl.png" width="300" alt="go-intl logo"/>
   <h1>go-intl</h1>
   <p><em>A high-performance Go internationalization library for sharing translations across terminal, desktop and server applications.</em></p>
+  <p>go-intl is all gophers need</p>
   <p><strong>English</strong> | <a href="./README.zh-CN.md">简体中文</a></p>
 </div>
 
