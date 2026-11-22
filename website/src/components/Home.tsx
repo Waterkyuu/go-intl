@@ -1,3 +1,4 @@
+import Globe from "./Globe";
 import { repository, sitePath, type GuideLink } from "./navigation";
 
 const benchmarks = [
@@ -68,16 +69,7 @@ export default function Home({ guides }: { guides: GuideLink[] }) {
             </a>
           </div>
         </div>
-        <img
-          src={sitePath("hemisphere.webp")}
-          srcSet={`${sitePath("hemisphere-864.webp")} 864w, ${sitePath("hemisphere.webp")} 2172w`}
-          sizes="min(104vw, 1360px)"
-          width="2172"
-          height="724"
-          fetchPriority="high"
-          alt=""
-          className="mt-8 block aspect-[6/1] h-auto w-[min(104vw,1360px)] max-w-none object-cover object-top md:mt-12"
-        />
+        <Globe />
       </section>
       <section className="bg-tile text-white" aria-labelledby="bench-title">
         <div className="frame py-16 md:py-20">
