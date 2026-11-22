@@ -2,7 +2,7 @@
   <img src="./assets/logo-go-intl.png" width="300" alt="go-intl 标志"/>
   <h1>go-intl</h1>
   <p><em>高性能 Go 国际化库，用更简单的 API 让终端、桌面和服务端应用共用一套翻译。</em></p>
-  <p><strong>go-intl is all gophers need</strong></p>
+  <p><img src="./assets/tagline.svg" alt="go-intl is all gophers need"/></p>
   <p><a href="./README.md">English</a> | <strong>简体中文</strong></p>
 </div>
 
