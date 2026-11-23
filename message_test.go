@@ -24,6 +24,8 @@ func TestMessageRendering(t *testing.T) {
 		{"", language.English, nil, ""},
 		{"Don't say ''hello'' to '{me}'", language.English, nil, "Don't say 'hello' to {me}"},
 		{"Hi {name}!", language.English, Values{"name": "Sam"}, "Hi Sam!"},
+		{"Hi {name}!", language.English, Values{"name": ""}, "Hi !"},
+		{"Item {id}.", language.English, Values{"id": 42}, "Item 42."},
 		{"{enabled, select, true {on} false {off} other {?}}",
 			language.English, Values{"enabled": false}, "off"},
 		{"{n, plural, other {# files} one {# file} =1 {exactly #}}",
@@ -120,6 +122,7 @@ func TestMessageValidation(t *testing.T) {
 func TestMessageArgumentErrors(t *testing.T) {
 	d := newDictionary(language.English)
 	for source, value := range map[string]any{
+		"Hi {missing}!": nil, "Hi {x}!": nil, "Total: {x, number}.": "12",
 		"prefix {missing}": nil, "prefix {x, plural, other {#}}": "2", "{x, number}": math.Inf(1),
 		"{x, date}": 1, "<x>a</x>": (func(string) string)(nil),
 	} {
