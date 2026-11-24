@@ -197,3 +197,63 @@ func BenchmarkLocalizedPlural(b *testing.B) {
 		})
 	}
 }
+
+// BenchmarkSingleInterpolation measures public translations with a bound translator and a prepared argument map.
+func BenchmarkSingleInterpolation(b *testing.B) {
+	for _, pattern := range []string{"{id}", "{id} online", "Hello, {id}", "Hello, {id}!", "Item {id}."} {
+		catalog, err := New("en", Define("en", map[string]string{"message": pattern}))
+		if err != nil {
+			b.Fatal(err)
+		}
+		translate := catalog.Translations("en")
+		for _, value := range []any{"Ada", 42} {
+			name, want := "string", "Ada"
+			if value == 42 {
+				name, want = "int", "42"
+			}
+			args := Values{"id": value}
+			b.Run(pattern+"/"+name, func(b *testing.B) {
+				expected := strings.ReplaceAll(pattern, "{id}", want)
+				if got := translate("message", args); got != expected {
+					b.Fatalf("got %q, want %q", got, expected)
+				}
+				b.ReportAllocs()
+				for b.Loop() {
+					translate("message", args)
+				}
+			})
+		}
+	}
+}
+
+// BenchmarkPlainInterpolation exercises distinct, repeated, and longer sequences of arguments.
+func BenchmarkPlainInterpolation(b *testing.B) {
+	values := Values{"sender": "Bob", "recipient": "Ada", "name": "Bob", "id": 42, "long": strings.Repeat("x", 4096)}
+	for _, tc := range []struct {
+		// pattern is the message rendered by the public translator.
+		pattern string
+		// want is the expected result for the prepared argument map.
+		want string
+	}{
+		{"{sender} invited {recipient}", "Bob invited Ada"},
+		{"{name} says hi to {name}", "Bob says hi to Bob"},
+		{"{id}/{id}", "42/42"},
+		{strings.Repeat("{name} ", 12), strings.Repeat("Bob ", 12)},
+		{"{long}/{long}", strings.Repeat("x", 4096) + "/" + strings.Repeat("x", 4096)},
+	} {
+		b.Run(tc.pattern, func(b *testing.B) {
+			catalog, err := New("en", Define("en", map[string]string{"message": tc.pattern}))
+			if err != nil {
+				b.Fatal(err)
+			}
+			t := catalog.Translations("en")
+			if got := t("message", values); got != tc.want {
+				b.Fatalf("got %q, want %q", got, tc.want)
+			}
+			b.ReportAllocs()
+			for b.Loop() {
+				t("message", values)
+			}
+		})
+	}
+}
