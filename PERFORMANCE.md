@@ -62,6 +62,14 @@ Each worker reads the same bound catalog. Additional readers add no shared write
 
 ## Reproduction
 
+From the repository root, run all 13 README cases against both libraries with Go 1.26 or later:
+
+```sh
+go test -C benchmarks -run '^$' -bench '^BenchmarkTranslation$' -benchmem -cpu=1 -benchtime=250ms -count=6
+```
+
+Each round produces 26 results. The [benchmark source](./benchmarks/translation_benchmark_test.go) checks the translated text before timing. The comparison module uses the local go-intl checkout, pins go-i18n to revision `93061b1`, and builds both with the same dependencies. The release measurements used separate builds and rotated their order between rounds.
+
 In the go-intl checkout, run
 
 ```sh

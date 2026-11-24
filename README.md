@@ -17,11 +17,11 @@ A Bubble Tea model, a MyGo window, an NSGo view, a Wails app’s local Go backen
 
 ## Performance
 
-The bars show translation time for go-intl v0.1.1 and go-i18n on an Apple M3 Pro with Go 1.27.1 (darwin/arm64). Each value is the median of six single-core runs with a bound translator or warmed localizer and prepared arguments. The speedup is the go-i18n time divided by the go-intl time.
+Apple M3 Pro, Go 1.27.1 (darwin/arm64). The ten interpolation cases use medians from the six-run v0.1.1 comparison. The two static lookups and the English plural retain the original three-run medians. Speedup is go-i18n time divided by go-intl time.
 
-<img src="./assets/benchmark.svg" width="100%" alt="go-intl / go-i18n (ns/op). Repeated static key 12.61 / 104.95 (8.32×) · Rotating static keys 15.88 / 120.65 (7.60×) · Greeting with a named argument 52.34 / 300.70 (5.75×) · English plural (count 7) 89.37 / 355.75 (3.98×)"/>
+<img src="./assets/benchmark.svg" width="100%" alt="13 translation benchmarks comparing go-intl and go-i18n by time, allocations, and speedup"/>
 
-[All 13 benchmark cases](https://github.com/Waterkyuu/go-intl/releases/tag/v0.1.1) · [Startup costs, concurrency, and additional workloads](./PERFORMANCE.md)
+[v0.1.1 benchmark results](https://github.com/Waterkyuu/go-intl/releases/tag/v0.1.1) · [Original benchmarks and methodology](./PERFORMANCE.md)
 
 ## Get started
 
