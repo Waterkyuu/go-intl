@@ -24,6 +24,17 @@ func TestMessageRendering(t *testing.T) {
 		{"", language.English, nil, ""},
 		{"Don't say ''hello'' to '{me}'", language.English, nil, "Don't say 'hello' to {me}"},
 		{"Hi {name}!", language.English, Values{"name": "Sam"}, "Hi Sam!"},
+		{"Hi {name}!", language.English, Values{"name": ""}, "Hi !"},
+		{"Item {id}.", language.English, Values{"id": 42}, "Item 42."},
+		{"{id}", language.English, Values{"id": ""}, ""},
+		{"{id}", language.English, Values{"id": 42}, "42"},
+		{"{id} online", language.English, Values{"id": "Ada"}, "Ada online"},
+		{"Time: {id}", language.English, Values{"id": time.Minute}, "Time: 1m0s"},
+		{"'{ID}' {id}''s item", language.English, Values{"id": 42}, "{ID} 42's item"},
+		{"{x}{y}", language.English, Values{"x": "A", "y": "B"}, "AB"},
+		{strings.Repeat("{x}.", 100), language.English, Values{"x": "abc"}, strings.Repeat("abc.", 100)},
+		{"'{from}' {x}{y} → {x}''s.", language.English, Values{"x": "甲", "y": ""}, "{from} 甲 → 甲's."},
+		{"{x} / {n, number}", language.English, Values{"x": "total", "n": 12345}, "total / 12,345"},
 		{"{enabled, select, true {on} false {off} other {?}}",
 			language.English, Values{"enabled": false}, "off"},
 		{"{n, plural, other {# files} one {# file} =1 {exactly #}}",
@@ -77,6 +88,29 @@ func TestMessageRendering(t *testing.T) {
 	}
 }
 
+// stringFunc lets a test observe when a value is converted to text.
+type stringFunc func() string
+
+// String evaluates the function at the current occurrence of the argument.
+func (f stringFunc) String() string { return f() }
+
+// TestRepeatedInterpolation evaluates a Stringer separately at each position, in source order.
+func TestRepeatedInterpolation(t *testing.T) {
+	c, err := New("en", Define("en", map[string]string{"message": "{name} says hi to {name}"}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	names := []string{"Bob", "Ada"}
+	values := Values{"name": stringFunc(func() string {
+		name := names[0]
+		names = names[1:]
+		return name
+	})}
+	if got := c.Translations("en")("message", values); got != "Bob says hi to Ada" {
+		t.Errorf("got %q, want Bob says hi to Ada", got)
+	}
+}
+
 // TestDateTimeArguments checks that the message format and width reach the calendar formatter.
 func TestDateTimeArguments(t *testing.T) {
 	d := newDictionary(language.French)
@@ -120,6 +154,9 @@ func TestMessageValidation(t *testing.T) {
 func TestMessageArgumentErrors(t *testing.T) {
 	d := newDictionary(language.English)
 	for source, value := range map[string]any{
+		"{missing}{x}": 1, "{x} then {missing}": 1,
+		"{missing}": nil, "{x} online": nil, "Hello, {x}": nil,
+		"Hi {missing}!": nil, "Hi {x}!": nil, "Total: {x, number}.": "12",
 		"prefix {missing}": nil, "prefix {x, plural, other {#}}": "2", "{x, number}": math.Inf(1),
 		"{x, date}": 1, "<x>a</x>": (func(string) string)(nil),
 	} {
