@@ -19,18 +19,24 @@ type compiledMessage struct {
 	raw string
 	// code stores instructions and nested alternatives in source order.
 	code []instruction
-	// single holds the decoded literals and key when the only operation is an ordinary interpolation.
-	single *singleInterpolation
+	// plain holds the ordered substitutions for messages containing only text and ordinary arguments.
+	plain *interpolation
 }
 
-// singleInterpolation represents one ordinary argument with optional surrounding text.
-type singleInterpolation struct {
-	// prefix is the decoded text before the argument.
-	prefix string
-	// key identifies the argument in the caller's values.
-	key string
-	// suffix is the decoded text after the argument.
+// interpolation stores each substitution in source order followed by the trailing literal.
+type interpolation struct {
+	// args stores one entry per argument occurrence, in source order.
+	args []interpolationArg
+	// suffix is the decoded text after the last argument.
 	suffix string
+}
+
+// interpolationArg pairs a named argument with the literal immediately before it.
+type interpolationArg struct {
+	// prefix contains the decoded text since the preceding argument.
+	prefix string
+	// key identifies the value to read at this position.
+	key string
 }
 
 // instruction contains a literal, an argument name, or an alternative selector.
@@ -98,25 +104,37 @@ func compileMessage(source string) (compiledMessage, error) {
 	if err := p.body(0, false, ""); err != nil {
 		return compiledMessage{}, fmt.Errorf("message at byte %d: %w", p.pos, err)
 	}
-	for i, op := range p.code {
-		if op.kind == opText {
-			continue
+	var count int
+	for _, op := range p.code {
+		switch op.kind {
+		case opValue:
+			count++
+		case opText:
+		default:
+			return compiledMessage{raw: source, code: p.code}, nil
 		}
-		if op.kind == opValue && !slices.ContainsFunc(p.code[i+1:], func(next instruction) bool {
-			return next.kind != opText
-		}) {
-			return compiledMessage{raw: source, single: &singleInterpolation{
-				prefix: literalText(p.code[:i]),
-				key:    op.text,
-				suffix: literalText(p.code[i+1:]),
-			}}, nil
-		}
-		return compiledMessage{raw: source, code: p.code}, nil
+	}
+	if count > 0 {
+		return compiledMessage{raw: source, plain: compileInterpolation(p.code, count)}, nil
 	}
 	if text := literalText(p.code); text != source {
 		return compiledMessage{raw: source, code: []instruction{{kind: opText, text: text}}}, nil
 	}
 	return compiledMessage{raw: source}, nil
+}
+
+// compileInterpolation associates decoded literals with their following argument and preserves their order.
+func compileInterpolation(code []instruction, count int) *interpolation {
+	args := make([]interpolationArg, 0, count)
+	start := 0
+	for i, op := range code {
+		if op.kind != opValue {
+			continue
+		}
+		args = append(args, interpolationArg{prefix: literalText(code[start:i]), key: op.text})
+		start = i + 1
+	}
+	return &interpolation{args: args, suffix: literalText(code[start:])}
 }
 
 // literalText joins adjacent decoded literals once, including fragments from ICU quoting.

@@ -15,16 +15,8 @@ import (
 
 // render evaluates only the selected alternatives. An error discards partial output.
 func (m *compiledMessage) render(locale *dictionary, values Values) (string, error) {
-	if single := m.single; single != nil {
-		value, ok := values[single.key]
-		if !ok || value == nil {
-			return "", fmt.Errorf("missing value for %q", single.key)
-		}
-		text := messageString(value)
-		if single.prefix == "" && single.suffix == "" {
-			return text, nil
-		}
-		return single.prefix + text + single.suffix, nil
+	if m.plain != nil {
+		return m.plain.render(values)
 	}
 	if len(m.code) == 0 {
 		return m.raw, nil
@@ -38,6 +30,33 @@ func (m *compiledMessage) render(locale *dictionary, values Values) (string, err
 		return "", err
 	}
 	return b.String(), nil
+}
+
+// render resolves each argument once per occurrence, preserving Stringer evaluation order.
+func (p *interpolation) render(values Values) (string, error) {
+	var local [128]byte
+	out := local[:0]
+	for i, arg := range p.args {
+		value := values[arg.key]
+		if value == nil {
+			return "", fmt.Errorf("missing value for %q", arg.key)
+		}
+		text := messageString(value)
+		if i+1 < len(p.args) {
+			out = append(out, arg.prefix...)
+			out = append(out, text...)
+			continue
+		}
+		// Concatenate the final argument directly so its text never goes through the buffer.
+		if len(out) > 0 {
+			return string(out) + arg.prefix + text + p.suffix, nil
+		}
+		if arg.prefix == "" && p.suffix == "" {
+			return text, nil
+		}
+		return arg.prefix + text + p.suffix, nil
+	}
+	return p.suffix, nil
 }
 
 // messageRender shares immutable input across the active nested message bodies.
