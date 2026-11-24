@@ -1,0 +1,68 @@
+.benchmark-results table {
+  display: table;
+  width: 100%;
+  margin: 1.6rem 0 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-variant-numeric: tabular-nums;
+}
+
+.benchmark-results caption {
+  padding-bottom: 0.45rem;
+  text-align: left;
+  font-size: 1.12rem;
+  font-weight: 600;
+}
+
+.benchmark-results :is(th, td) {
+  vertical-align: middle;
+  padding: 0.45rem 0.25rem;
+  text-align: right;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+}
+
+.benchmark-results th:first-child {
+  width: 42%;
+  text-align: left;
+  padding-left: 0;
+}
+
+.benchmark-results tbody th {
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+
+.benchmark-results small {
+  display: block;
+  margin: 0;
+  font-size: 0.78em;
+}
+
+.benchmark-results strong {
+  color: var(--sl-color-text-accent, #85c4ff);
+}
+
+.benchmark-results .speedup-track {
+  display: block;
+  width: min(100%, 6rem);
+  margin: 0.3rem 0 0.2rem auto;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.benchmark-results .speedup-track span {
+  display: block;
+  height: 0.25rem;
+  border-radius: 2px;
+  background: var(--sl-color-text-accent, #85c4ff);
+}
+
+@media (max-width: 36rem) {
+  .benchmark-results table {
+    font-size: 0.84rem;
+  }
+
+  .benchmark-results th:first-child {
+    width: 37%;
+  }
+}

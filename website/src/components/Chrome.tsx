@@ -77,7 +77,7 @@ export function Footer() {
         </a>
         <div className="flex flex-wrap gap-5">
           <a href={sitePath("guides/get-started/")}>Documentation</a>
-          <a href={`${repository}/releases/tag/v0.1.0`}>Release notes</a>
+          <a href={`${repository}/releases/latest`}>Release notes</a>
           <a href={repository}>GitHub ↗</a>
         </div>
       </div>

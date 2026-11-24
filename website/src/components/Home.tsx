@@ -1,40 +1,6 @@
+import BenchmarkResults from "./BenchmarkResults";
 import Globe from "./Globe";
 import { repository, sitePath, type GuideLink } from "./navigation";
-
-const benchmarks = [
-  {
-    label: "Repeated static key",
-    results: [
-      ["go-intl", 12.9, 0],
-      ["go-i18n", 116.8, 0],
-    ],
-  },
-  {
-    label: "Rotating static keys (1,024 keys)",
-    results: [
-      ["go-intl", 15.8, 0],
-      ["go-i18n", 125.8, 0],
-    ],
-  },
-  {
-    label: "Greeting with a named argument",
-    results: [
-      ["go-intl", 66.2, 3],
-      ["go-i18n", 288.2, 7],
-    ],
-  },
-  {
-    label: "English plural (count 7)",
-    results: [
-      ["go-intl", 81.2, 2],
-      ["go-i18n", 336.5, 8],
-    ],
-  },
-] as const;
-
-const maxTime = Math.max(
-  ...benchmarks.flatMap(({ results }) => results.map(([, time]) => time)),
-);
 
 export default function Home({ guides }: { guides: GuideLink[] }) {
   return (
@@ -46,9 +12,9 @@ export default function Home({ guides }: { guides: GuideLink[] }) {
         <div className="frame flex flex-col items-center">
           <a
             className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-            href={`${repository}/releases/tag/v0.1.0`}
+            href={`${repository}/releases/tag/v0.1.1`}
           >
-            go-intl v0.1.0 <span aria-hidden="true">↗</span>
+            go-intl v0.1.1 <span aria-hidden="true">↗</span>
           </a>
           <h1 id="hero-title" className="hero-title">
             Internationalization for Go.
@@ -80,41 +46,13 @@ export default function Home({ guides }: { guides: GuideLink[] }) {
             Translation benchmarks
           </h2>
           <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted">
-            Time per English translation with a bound translator or warmed
-            localizer and reused arguments. Shorter bars mean faster rendering.
+            Median nanoseconds per English translation and allocations per call.
+            Speedup is go-i18n time divided by go-intl time.
           </p>
-          <div className="mt-10 grid gap-x-16 gap-y-10 md:grid-cols-2">
-            {benchmarks.map(({ label, results }) => (
-              <figure key={label}>
-                <figcaption className="mb-4 text-xl font-semibold">
-                  {label}
-                </figcaption>
-                {results.map(([library, time, allocs]) => (
-                  <div key={library} className="mt-3">
-                    <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-2 text-sm">
-                      <span>{library}</span>
-                      <span className="font-mono tabular-nums">
-                        {time} ns/op{" "}
-                        <span className="text-muted">· {allocs} allocs/op</span>
-                      </span>
-                    </div>
-                    <div
-                      aria-hidden="true"
-                      className={
-                        library === "go-intl"
-                          ? "h-2 rounded-full bg-action-light"
-                          : "h-2 rounded-full bg-muted"
-                      }
-                      style={{ width: `${(time / maxTime) * 100}%` }}
-                    />
-                  </div>
-                ))}
-              </figure>
-            ))}
-          </div>
+          <BenchmarkResults />
           <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
             <p className="text-sm text-muted">
-              Apple M3 Pro · Go 1.27.1 · median of three runs
+              Apple M3 Pro · Go 1.27.1 · darwin/arm64
             </p>
             <a
               href={sitePath("guides/performance/")}
