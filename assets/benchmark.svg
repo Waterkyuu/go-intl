@@ -4,41 +4,41 @@
   <g font-family="system-ui, sans-serif" font-size="15" fill="#1f2328">
     <text x="16" y="28" font-weight="650">Translation time (ns/op) · shorter is faster</text>
     <text x="622" y="28" text-anchor="end">Allocs/op</text>
-    <text x="16" y="60" font-weight="650">Repeated static key</text>
+    <text x="16" y="60" font-weight="650">Repeated static key · 8.32×</text>
     <text x="16" y="83">go-intl</text>
-    <rect x="84" y="71" width="16.512" height="13" rx="2" fill="#0969da"/>
-    <text x="108.512" y="83">12.9</text>
+    <rect x="84" y="71" width="16.141" height="13" rx="2" fill="#0969da"/>
+    <text x="108.141" y="83">12.61</text>
     <text x="622" y="83" text-anchor="end">0</text>
     <text x="16" y="106">go-i18n</text>
-    <rect x="84" y="94" width="149.504" height="13" rx="2" fill="#68788a"/>
-    <text x="241.504" y="106">116.8</text>
+    <rect x="84" y="94" width="134.336" height="13" rx="2" fill="#68788a"/>
+    <text x="226.336" y="106">104.95</text>
     <text x="622" y="106" text-anchor="end">0</text>
-    <text x="16" y="150" font-weight="650">Rotating static keys</text>
+    <text x="16" y="150" font-weight="650">Rotating static keys · 7.60×</text>
     <text x="16" y="173">go-intl</text>
-    <rect x="84" y="161" width="20.224" height="13" rx="2" fill="#0969da"/>
-    <text x="112.224" y="173">15.8</text>
+    <rect x="84" y="161" width="20.326" height="13" rx="2" fill="#0969da"/>
+    <text x="112.326" y="173">15.88</text>
     <text x="622" y="173" text-anchor="end">0</text>
     <text x="16" y="196">go-i18n</text>
-    <rect x="84" y="184" width="161.024" height="13" rx="2" fill="#68788a"/>
-    <text x="253.024" y="196">125.8</text>
+    <rect x="84" y="184" width="154.432" height="13" rx="2" fill="#68788a"/>
+    <text x="246.432" y="196">120.65</text>
     <text x="622" y="196" text-anchor="end">0</text>
-    <text x="16" y="240" font-weight="650">Greeting with a named argument</text>
+    <text x="16" y="240" font-weight="650">Greeting with a named argument · 5.75×</text>
     <text x="16" y="263">go-intl</text>
-    <rect x="84" y="251" width="84.736" height="13" rx="2" fill="#0969da"/>
-    <text x="176.736" y="263">66.2</text>
-    <text x="622" y="263" text-anchor="end">3</text>
+    <rect x="84" y="251" width="66.995" height="13" rx="2" fill="#0969da"/>
+    <text x="158.995" y="263">52.34</text>
+    <text x="622" y="263" text-anchor="end">2</text>
     <text x="16" y="286">go-i18n</text>
-    <rect x="84" y="274" width="368.896" height="13" rx="2" fill="#68788a"/>
-    <text x="460.896" y="286">288.2</text>
+    <rect x="84" y="274" width="384.896" height="13" rx="2" fill="#68788a"/>
+    <text x="476.896" y="286">300.70</text>
     <text x="622" y="286" text-anchor="end">7</text>
-    <text x="16" y="330" font-weight="650">English plural (count 7)</text>
+    <text x="16" y="330" font-weight="650">English plural (count 7) · 3.98×</text>
     <text x="16" y="353">go-intl</text>
-    <rect x="84" y="341" width="103.936" height="13" rx="2" fill="#0969da"/>
-    <text x="195.936" y="353">81.2</text>
+    <rect x="84" y="341" width="114.394" height="13" rx="2" fill="#0969da"/>
+    <text x="206.394" y="353">89.37</text>
     <text x="622" y="353" text-anchor="end">2</text>
     <text x="16" y="376">go-i18n</text>
-    <rect x="84" y="364" width="430.720" height="13" rx="2" fill="#68788a"/>
-    <text x="522.720" y="376">336.5</text>
+    <rect x="84" y="364" width="455.360" height="13" rx="2" fill="#68788a"/>
+    <text x="547.360" y="376">355.75</text>
     <text x="622" y="376" text-anchor="end">8</text>
   </g>
 </svg>

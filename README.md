@@ -17,11 +17,11 @@ A Bubble Tea model, a MyGo window, an NSGo view, a Wails app’s local Go backen
 
 ## Performance
 
-The chart shows median nanoseconds per translation across three runs on an Apple M3 Pro with Go 1.27.1 (darwin/arm64). The English catalog contains 1,024 static keys, a greeting and a plural. The tests reuse the translator or localizer and the argument maps.
+The bars show translation time for go-intl v0.1.1 and go-i18n on an Apple M3 Pro with Go 1.27.1 (darwin/arm64). Each value is the median of six single-core runs with a bound translator or warmed localizer and prepared arguments. The speedup is the go-i18n time divided by the go-intl time.
 
-<img src="./assets/benchmark.svg" width="100%" alt="go-intl / go-i18n (ns/op). Repeated static key: 12.9 / 116.8; Rotating static keys: 15.8 / 125.8; Greeting with a named argument: 66.2 / 288.2; English plural (count 7): 81.2 / 336.5"/>
+<img src="./assets/benchmark.svg" width="100%" alt="go-intl / go-i18n (ns/op). Repeated static key 12.61 / 104.95 (8.32×) · Rotating static keys 15.88 / 120.65 (7.60×) · Greeting with a named argument 52.34 / 300.70 (5.75×) · English plural (count 7) 89.37 / 355.75 (3.98×)"/>
 
-Binding the language once per view or request avoids repeated negotiation. A fresh argument map, a grouped number or a different language changes rendering cost. The report includes those measurements, startup costs, concurrency and reproduction commands. [Benchmark report](./PERFORMANCE.md)
+[All 13 benchmark cases](https://github.com/Waterkyuu/go-intl/releases/tag/v0.1.1) · [Startup costs, concurrency, and additional workloads](./PERFORMANCE.md)
 
 ## Get started
 
