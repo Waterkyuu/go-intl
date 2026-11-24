@@ -17,11 +17,11 @@ Bubble Tea 模型、MyGo 窗口、NSGo 视图、Wails 应用的本地 Go 后端�
 
 ## 性能
 
-图中比较 go-intl v0.1.1 和 go-i18n 的翻译耗时。测试使用 Apple M3 Pro、Go 1.27.1（darwin/arm64），取六轮单核测量的中位数，复用已绑定的翻译器或预热后的 localizer，以及预先准备的参数。加速倍数按 go-i18n 耗时除以 go-intl 耗时计算。
+测试平台为 Apple M3 Pro，Go 1.27.1（darwin/arm64）。10 组插值取 v0.1.1 六轮对照测试的中位数。两组静态查找和一组英文复数沿用原图的三轮中位数。加速倍数为 go-i18n 耗时除以 go-intl 耗时。
 
-<img src="./assets/benchmark.zh-CN.svg" width="100%" alt="go-intl / go-i18n (ns/op). 重复读取同一静态键 12.61 / 104.95 (8.32×) · 轮流读取静态键 15.88 / 120.65 (7.60×) · 问候语插入姓名 52.34 / 300.70 (5.75×) · 英文复数（数量为 7） 89.37 / 355.75 (3.98×)"/>
+<img src="./assets/benchmark.zh-CN.svg" width="100%" alt="go-intl 与 go-i18n 在 13 个翻译场景中的耗时、分配次数及加速倍数"/>
 
-[全部 13 项基准结果](https://github.com/Waterkyuu/go-intl/releases/tag/v0.1.1) · [启动成本、并发及其他场景](./PERFORMANCE.md)
+[v0.1.1 基准结果](https://github.com/Waterkyuu/go-intl/releases/tag/v0.1.1) · [原始基准数据与测试方法](./PERFORMANCE.md)
 
 ## 快速开始
 
