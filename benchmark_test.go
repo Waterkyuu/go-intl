@@ -155,6 +155,28 @@ func BenchmarkTranslate(b *testing.B) {
 	})
 }
 
+// BenchmarkSingleInterpolation compares argument types that produce the same visible text.
+func BenchmarkSingleInterpolation(b *testing.B) {
+	messages, _ := benchmarkMessages(1024)
+	messages["screen.item"] = "Item {id}."
+	catalog, err := New("en", Define("en", messages))
+	if err != nil {
+		b.Fatal(err)
+	}
+	t := catalog.Translations("en")
+	for _, id := range []any{"42", 42} {
+		b.Run(fmt.Sprintf("%T", id), func(b *testing.B) {
+			values := Values{"id": id}
+			if got := t("screen.item", values); got != "Item 42." {
+				b.Fatalf("got %q, want %q", got, "Item 42.")
+			}
+			for b.Loop() {
+				t("screen.item", values)
+			}
+		})
+	}
+}
+
 // BenchmarkLocalizedPlural exercises localized digits and grouping across the formatting path.
 func BenchmarkLocalizedPlural(b *testing.B) {
 	for locale, want := range map[string]string{"en": "12,345", "fr": "12\u00a0345", "ar": "١٢٬٣٤٥"} {
