@@ -2,7 +2,7 @@ name: Merge Dependabot updates
 
 on:
   workflow_run:
-    workflows: ["Go checks"]
+    workflows: ["CI"]
     types: [completed]
 
 permissions: {}

@@ -1,10 +1,10 @@
-name: Go checks
+name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, "release/**"]
   pull_request:
-    branches: [main]
+    branches: [main, "release/**"]
 
 permissions:
   contents: read
@@ -19,30 +19,25 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Detect the application module
-        id: module
-        run: |
-          if test -f go.mod; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
-          fi
-
       - uses: actions/setup-go@v7
         with:
-          go-version: ${{ steps.module.outputs.present != 'true' && 'stable' || '' }}
-          go-version-file: ${{ steps.module.outputs.present == 'true' && 'go.mod' || '' }}
+          go-version-file: go.mod
           cache: false
 
       - name: Test the Codex commit hook
         run: go test -race .codex/hooks/*.go
 
       - name: Lint Go packages
-        if: steps.module.outputs.present == 'true'
         uses: golangci/golangci-lint-action@v9
         with:
           version: v2.13.2
 
+      - name: Check Go formatting
+        run: |
+          git ls-files -z -- '*.go' | xargs -0 golangci-lint fmt
+          git diff --exit-code -- '*.go'
+
       - name: Verify, test, and build Go packages
-        if: steps.module.outputs.present == 'true'
         run: |
           go mod verify
           go test -race ./...
