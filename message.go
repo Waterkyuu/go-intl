@@ -13,12 +13,30 @@ import (
 // A caller sharing the map across goroutines must keep it read-only.
 type Values map[string]any
 
-// compiledMessage owns a read-only instruction stream. Unescaped static messages only use raw.
+// compiledMessage preserves the original pattern and its read-only rendering representation.
 type compiledMessage struct {
 	// raw preserves the catalog author's original ICU pattern.
 	raw string
 	// code stores instructions and nested alternatives in source order.
 	code []instruction
+	// plain holds the ordered substitutions for messages containing only text and ordinary arguments.
+	plain *interpolation
+}
+
+// interpolation stores each substitution in source order followed by the trailing literal.
+type interpolation struct {
+	// args stores one entry per argument occurrence, in source order.
+	args []interpolationArg
+	// suffix is the decoded text after the last argument.
+	suffix string
+}
+
+// interpolationArg pairs a named argument with the literal immediately before it.
+type interpolationArg struct {
+	// prefix contains the decoded text since the preceding argument.
+	prefix string
+	// key identifies the value to read at this position.
+	key string
 }
 
 // instruction contains a literal, an argument name, or an alternative selector.
@@ -86,19 +104,52 @@ func compileMessage(source string) (compiledMessage, error) {
 	if err := p.body(0, false, ""); err != nil {
 		return compiledMessage{}, fmt.Errorf("message at byte %d: %w", p.pos, err)
 	}
-	var literal strings.Builder
+	var count int
 	for _, op := range p.code {
-		if op.kind != opText {
+		switch op.kind {
+		case opValue:
+			count++
+		case opText:
+		default:
 			return compiledMessage{raw: source, code: p.code}, nil
 		}
 	}
-	for _, op := range p.code {
-		literal.WriteString(op.text)
+	if count > 0 {
+		return compiledMessage{raw: source, plain: compileInterpolation(p.code, count)}, nil
 	}
-	if text := literal.String(); text != source {
+	if text := literalText(p.code); text != source {
 		return compiledMessage{raw: source, code: []instruction{{kind: opText, text: text}}}, nil
 	}
 	return compiledMessage{raw: source}, nil
+}
+
+// compileInterpolation associates decoded literals with their following argument and preserves their order.
+func compileInterpolation(code []instruction, count int) *interpolation {
+	args := make([]interpolationArg, 0, count)
+	start := 0
+	for i, op := range code {
+		if op.kind != opValue {
+			continue
+		}
+		args = append(args, interpolationArg{prefix: literalText(code[start:i]), key: op.text})
+		start = i + 1
+	}
+	return &interpolation{args: args, suffix: literalText(code[start:])}
+}
+
+// literalText joins adjacent decoded literals once, including fragments from ICU quoting.
+func literalText(code []instruction) string {
+	switch len(code) {
+	case 0:
+		return ""
+	case 1:
+		return code[0].text
+	}
+	var literal strings.Builder
+	for _, op := range code {
+		literal.WriteString(op.text)
+	}
+	return literal.String()
 }
 
 // emit returns the position at which the new instruction was written.
