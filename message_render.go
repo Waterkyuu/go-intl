@@ -15,22 +15,22 @@ import (
 
 // render evaluates only the selected alternatives. An error discards partial output.
 func (m *compiledMessage) render(locale *dictionary, values Values) (string, error) {
+	if single := m.single; single != nil {
+		value, ok := values[single.key]
+		if !ok || value == nil {
+			return "", fmt.Errorf("missing value for %q", single.key)
+		}
+		text := messageString(value)
+		if single.prefix == "" && single.suffix == "" {
+			return text, nil
+		}
+		return single.prefix + text + single.suffix, nil
+	}
 	if len(m.code) == 0 {
 		return m.raw, nil
 	}
 	if len(m.code) == 1 && m.code[0].kind == opText {
 		return m.code[0].text, nil
-	}
-	// Resolve the argument once so non-string values also bypass the instruction loop.
-	code := m.code
-	if len(code) == 3 && code[0].kind == opText &&
-		code[1].kind == opValue && code[2].kind == opText {
-		key := code[1].text
-		value, ok := values[key]
-		if !ok || value == nil {
-			return "", fmt.Errorf("missing value for %q", key)
-		}
-		return code[0].text + messageString(value) + code[2].text, nil
 	}
 	var b strings.Builder
 	r := messageRender{code: m.code, locale: locale, values: values}

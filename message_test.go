@@ -26,6 +26,12 @@ func TestMessageRendering(t *testing.T) {
 		{"Hi {name}!", language.English, Values{"name": "Sam"}, "Hi Sam!"},
 		{"Hi {name}!", language.English, Values{"name": ""}, "Hi !"},
 		{"Item {id}.", language.English, Values{"id": 42}, "Item 42."},
+		{"{id}", language.English, Values{"id": ""}, ""},
+		{"{id}", language.English, Values{"id": 42}, "42"},
+		{"{id} online", language.English, Values{"id": "Ada"}, "Ada online"},
+		{"Time: {id}", language.English, Values{"id": time.Minute}, "Time: 1m0s"},
+		{"'{ID}' {id}''s item", language.English, Values{"id": 42}, "{ID} 42's item"},
+		{"{x}{y}", language.English, Values{"x": "A", "y": "B"}, "AB"},
 		{"{enabled, select, true {on} false {off} other {?}}",
 			language.English, Values{"enabled": false}, "off"},
 		{"{n, plural, other {# files} one {# file} =1 {exactly #}}",
@@ -122,6 +128,7 @@ func TestMessageValidation(t *testing.T) {
 func TestMessageArgumentErrors(t *testing.T) {
 	d := newDictionary(language.English)
 	for source, value := range map[string]any{
+		"{missing}": nil, "{x} online": nil, "Hello, {x}": nil,
 		"Hi {missing}!": nil, "Hi {x}!": nil, "Total: {x, number}.": "12",
 		"prefix {missing}": nil, "prefix {x, plural, other {#}}": "2", "{x, number}": math.Inf(1),
 		"{x, date}": 1, "<x>a</x>": (func(string) string)(nil),

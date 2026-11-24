@@ -155,8 +155,8 @@ func BenchmarkTranslate(b *testing.B) {
 	})
 }
 
-// BenchmarkSingleInterpolation compares argument types that produce the same visible text.
-func BenchmarkSingleInterpolation(b *testing.B) {
+// BenchmarkCatalogInterpolation1024 compares argument types that produce the same visible text.
+func BenchmarkCatalogInterpolation1024(b *testing.B) {
 	messages, _ := benchmarkMessages(1024)
 	messages["screen.item"] = "Item {id}."
 	catalog, err := New("en", Define("en", messages))

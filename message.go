@@ -13,12 +13,24 @@ import (
 // A caller sharing the map across goroutines must keep it read-only.
 type Values map[string]any
 
-// compiledMessage owns a read-only instruction stream. Unescaped static messages only use raw.
+// compiledMessage preserves the original pattern and its read-only rendering representation.
 type compiledMessage struct {
 	// raw preserves the catalog author's original ICU pattern.
 	raw string
 	// code stores instructions and nested alternatives in source order.
 	code []instruction
+	// single holds the decoded literals and key when the only operation is an ordinary interpolation.
+	single *singleInterpolation
+}
+
+// singleInterpolation represents one ordinary argument with optional surrounding text.
+type singleInterpolation struct {
+	// prefix is the decoded text before the argument.
+	prefix string
+	// key identifies the argument in the caller's values.
+	key string
+	// suffix is the decoded text after the argument.
+	suffix string
 }
 
 // instruction contains a literal, an argument name, or an alternative selector.
@@ -86,19 +98,40 @@ func compileMessage(source string) (compiledMessage, error) {
 	if err := p.body(0, false, ""); err != nil {
 		return compiledMessage{}, fmt.Errorf("message at byte %d: %w", p.pos, err)
 	}
-	var literal strings.Builder
-	for _, op := range p.code {
-		if op.kind != opText {
-			return compiledMessage{raw: source, code: p.code}, nil
+	for i, op := range p.code {
+		if op.kind == opText {
+			continue
 		}
+		if op.kind == opValue && !slices.ContainsFunc(p.code[i+1:], func(next instruction) bool {
+			return next.kind != opText
+		}) {
+			return compiledMessage{raw: source, single: &singleInterpolation{
+				prefix: literalText(p.code[:i]),
+				key:    op.text,
+				suffix: literalText(p.code[i+1:]),
+			}}, nil
+		}
+		return compiledMessage{raw: source, code: p.code}, nil
 	}
-	for _, op := range p.code {
-		literal.WriteString(op.text)
-	}
-	if text := literal.String(); text != source {
+	if text := literalText(p.code); text != source {
 		return compiledMessage{raw: source, code: []instruction{{kind: opText, text: text}}}, nil
 	}
 	return compiledMessage{raw: source}, nil
+}
+
+// literalText joins adjacent decoded literals once, including fragments from ICU quoting.
+func literalText(code []instruction) string {
+	switch len(code) {
+	case 0:
+		return ""
+	case 1:
+		return code[0].text
+	}
+	var literal strings.Builder
+	for _, op := range code {
+		literal.WriteString(op.text)
+	}
+	return literal.String()
 }
 
 // emit returns the position at which the new instruction was written.
