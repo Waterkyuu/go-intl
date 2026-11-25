@@ -1,9 +1,16 @@
+.benchmark-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  margin-top: 1.6rem;
+}
+
 .benchmark-results table {
   display: table;
   width: 100%;
-  margin: 1.6rem 0 0;
+  min-width: 40rem;
+  margin: 0;
   border-collapse: collapse;
-  table-layout: fixed;
+  table-layout: auto;
   font-variant-numeric: tabular-nums;
 }
 
@@ -22,8 +29,20 @@
   border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent);
 }
 
-.benchmark-results th:first-child {
-  width: 42%;
+.benchmark-results .case-column {
+  width: 26%;
+}
+
+.benchmark-results th[scope="colgroup"] {
+  text-align: center;
+}
+
+.benchmark-results colgroup + colgroup {
+  border-left: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+}
+
+.benchmark-results th[scope="row"],
+.benchmark-results thead tr:first-child th:first-child {
   text-align: left;
   padding-left: 0;
 }
@@ -31,12 +50,6 @@
 .benchmark-results tbody th {
   font-weight: 400;
   overflow-wrap: anywhere;
-}
-
-.benchmark-results small {
-  display: block;
-  margin: 0;
-  font-size: 0.78em;
 }
 
 .benchmark-results strong {
@@ -60,9 +73,5 @@
 @media (max-width: 36rem) {
   .benchmark-results table {
     font-size: 0.84rem;
-  }
-
-  .benchmark-results th:first-child {
-    width: 37%;
   }
 }

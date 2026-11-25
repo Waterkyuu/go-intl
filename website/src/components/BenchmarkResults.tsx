@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import "./benchmark-results.css";
 
 type Measurement = [time: number, bytes: number, allocs: number];
@@ -46,45 +47,72 @@ export default function BenchmarkResults() {
           maximumFractionDigits: decimals,
         });
         return (
-          <table key={title}>
-            <caption>{title}</caption>
-            <thead>
-              <tr>
-                <th scope="col">Case</th>
-                <th scope="col">
-                  go-intl<small>ns/op</small>
-                </th>
-                <th scope="col">
-                  go-i18n<small>ns/op</small>
-                </th>
-                <th scope="col">Speedup</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cases.map(([scenario, intl, i18n]) => (
-                <tr key={scenario}>
-                  <th scope="row">{scenario}</th>
-                  {[intl, i18n].map(([ns, bytes, allocs], index) => (
-                    <td key={index}>
-                      {time.format(ns)}
-                      <small>{bytes.toLocaleString("en-US")} B/op</small>
-                      <small>{allocs} allocs/op</small>
-                    </td>
-                  ))}
-                  <td>
-                    <strong>{(i18n[0] / intl[0]).toFixed(2)}×</strong>
-                    <span aria-hidden="true" className="speedup-track">
-                      <span
-                        style={{
-                          width: `${(i18n[0] / intl[0] / maxSpeedup) * 100}%`,
-                        }}
-                      />
-                    </span>
-                  </td>
+          <div
+            className="benchmark-scroll"
+            key={title}
+            tabIndex={0}
+            role="region"
+            aria-label={title}
+          >
+            <table>
+              <caption>{title}</caption>
+              <colgroup>
+                <col className="case-column" />
+              </colgroup>
+              <colgroup span={3} />
+              <colgroup span={3} />
+              <colgroup />
+              <thead>
+                <tr>
+                  <th scope="col" rowSpan={2}>
+                    Case
+                  </th>
+                  <th scope="colgroup" colSpan={3}>
+                    go-intl
+                  </th>
+                  <th scope="colgroup" colSpan={3}>
+                    go-i18n
+                  </th>
+                  <th scope="col" rowSpan={2}>
+                    Speedup
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+                <tr>
+                  {["go-intl", "go-i18n"].map((library) => (
+                    <Fragment key={library}>
+                      <th scope="col">ns/op</th>
+                      <th scope="col">B/op</th>
+                      <th scope="col">allocs/op</th>
+                    </Fragment>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {cases.map(([scenario, intl, i18n]) => (
+                  <tr key={scenario}>
+                    <th scope="row">{scenario}</th>
+                    {[intl, i18n].map(([ns, bytes, allocs], index) => (
+                      <Fragment key={index}>
+                        <td>{time.format(ns)}</td>
+                        <td>{bytes.toLocaleString("en-US")}</td>
+                        <td>{allocs}</td>
+                      </Fragment>
+                    ))}
+                    <td>
+                      <strong>{(i18n[0] / intl[0]).toFixed(2)}×</strong>
+                      <span aria-hidden="true" className="speedup-track">
+                        <span
+                          style={{
+                            width: `${(i18n[0] / intl[0] / maxSpeedup) * 100}%`,
+                          }}
+                        />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         );
       })}
     </div>
