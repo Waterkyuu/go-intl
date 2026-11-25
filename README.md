@@ -31,7 +31,7 @@ The core package requires Go 1.25 or later. To try the example in a new module, 
 mkdir intl-demo
 cd intl-demo
 go mod init example.com/intl-demo
-go get github.com/waterkyuu/go-intl@v0.1.0
+go get github.com/waterkyuu/go-intl
 ```
 
 Save this program as `main.go` in the demo module and run `go run .`. The import path ends in `go-intl` and the package name is `intl`.

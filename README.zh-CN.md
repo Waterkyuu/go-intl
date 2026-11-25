@@ -31,7 +31,7 @@ Bubble Tea 模型、MyGo 窗口、NSGo 视图、Wails 应用的本地 Go 后端�
 mkdir intl-demo
 cd intl-demo
 go mod init example.com/intl-demo
-go get github.com/waterkyuu/go-intl@v0.1.0
+go get github.com/waterkyuu/go-intl
 ```
 
 将下面的程序保存为示例模块的 `main.go`，然后运行 `go run .`。导入路径以 `go-intl` 结尾，代码中的包名为 `intl`。
