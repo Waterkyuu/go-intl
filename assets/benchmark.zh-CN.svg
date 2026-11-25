@@ -1,83 +1,83 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 680" width="840" height="680" role="img" aria-labelledby="title desc" lang="zh-CN">
   <title id="title">翻译性能对比</title>
-  <desc id="desc">10 组插值来自 v0.1.1 对照测试，静态查找和复数沿用原图的 3 组测量。每行列出两个库的单次耗时、分配次数和耗时比。</desc>
+  <desc id="desc">10 组插值来自 v0.1.1 对照测试，静态查找和复数沿用原图的 3 组测量。每行列出两个库的单次耗时、分配字节数、分配次数和耗时比。</desc>
   <rect width="840" height="680" rx="12" fill="#202329"/>
   <g font-family="system-ui, sans-serif" fill="#f4f7fb" style="font-variant-numeric:tabular-nums">
     <text x="22" y="38" font-size="26" font-weight="650">翻译性能对比</text>
     <text x="818" y="36" font-size="15" text-anchor="end" fill="#bbc5d1">Apple M3 Pro  ·  Go 1.27.1</text>
     <text x="22" y="84" font-size="16" font-weight="650">场景</text>
     <text x="449" y="73" font-size="17" text-anchor="end" font-weight="650">go-intl</text>
-    <text x="449" y="96" font-size="13" text-anchor="end" fill="#bbc5d1">ns/op  ·  allocs/op</text>
+    <text x="449" y="96" font-size="13" text-anchor="end" fill="#bbc5d1">ns/op  ·  B/op  ·  allocs/op</text>
     <text x="633" y="73" font-size="17" text-anchor="end" font-weight="650">go-i18n</text>
-    <text x="633" y="96" font-size="13" text-anchor="end" fill="#bbc5d1">ns/op  ·  allocs/op</text>
+    <text x="633" y="96" font-size="13" text-anchor="end" fill="#bbc5d1">ns/op  ·  B/op  ·  allocs/op</text>
     <text x="816" y="84" font-size="16" text-anchor="end" font-weight="650">go-intl 加速倍数</text>
     <rect x="0" y="110" width="840" height="29" fill="#303944"/>
     <text x="22" y="130" font-size="15" font-weight="650" fill="#c9e4ff">插值  ·  6 轮中位数</text>
     <text x="22" y="165" font-size="16">单个参数  {first}</text>
-    <text x="449" y="165" font-size="16" text-anchor="end">27.54  ·  1</text>
-    <text x="633" y="165" font-size="16" text-anchor="end">284.60  ·  7</text>
+    <text x="449" y="165" font-size="16" text-anchor="end">27.54  ·  8  ·  1</text>
+    <text x="633" y="165" font-size="16" text-anchor="end">284.60  ·  275  ·  7</text>
     <rect x="654" y="155" width="90.90" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="165" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">10.33×</text>
     <text x="22" y="202" font-size="16" font-family="ui-monospace, monospace">Hello, {first}!</text>
-    <text x="449" y="202" font-size="16" text-anchor="end">52.34  ·  2</text>
-    <text x="633" y="202" font-size="16" text-anchor="end">300.70  ·  7</text>
+    <text x="449" y="202" font-size="16" text-anchor="end">52.34  ·  24  ·  2</text>
+    <text x="633" y="202" font-size="16" text-anchor="end">300.70  ·  288  ·  7</text>
     <rect x="654" y="192" width="50.60" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="202" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">5.75×</text>
     <text x="22" y="239" font-size="16" font-family="ui-monospace, monospace">Item {id}.   (42)</text>
-    <text x="449" y="239" font-size="16" text-anchor="end">88.86  ·  3</text>
-    <text x="633" y="239" font-size="16" text-anchor="end">307.60  ·  7</text>
+    <text x="449" y="239" font-size="16" text-anchor="end">88.86  ·  24  ·  3</text>
+    <text x="633" y="239" font-size="16" text-anchor="end">307.60  ·  280  ·  7</text>
     <rect x="654" y="229" width="30.45" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="239" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">3.46×</text>
     <text x="22" y="276" font-size="16" font-family="ui-monospace, monospace">{first} {last}</text>
-    <text x="449" y="276" font-size="16" text-anchor="end">70.28  ·  2</text>
-    <text x="633" y="276" font-size="16" text-anchor="end">420.15  ·  9</text>
+    <text x="449" y="276" font-size="16" text-anchor="end">70.28  ·  24  ·  2</text>
+    <text x="633" y="276" font-size="16" text-anchor="end">420.15  ·  320  ·  9</text>
     <rect x="654" y="266" width="52.62" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="276" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">5.98×</text>
     <text x="22" y="313" font-size="16" font-family="ui-monospace, monospace">{first}{last}</text>
-    <text x="449" y="313" font-size="16" text-anchor="end">68.54  ·  2</text>
-    <text x="633" y="313" font-size="16" text-anchor="end">410.20  ·  9</text>
+    <text x="449" y="313" font-size="16" text-anchor="end">68.54  ·  24  ·  2</text>
+    <text x="633" y="313" font-size="16" text-anchor="end">410.20  ·  320  ·  9</text>
     <rect x="654" y="303" width="52.62" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="313" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">5.98×</text>
     <text x="22" y="350" font-size="16">4 个不同参数</text>
-    <text x="449" y="350" font-size="16" text-anchor="end">97.93  ·  2</text>
-    <text x="633" y="350" font-size="16" text-anchor="end">670.65  ·  13</text>
+    <text x="449" y="350" font-size="16" text-anchor="end">97.93  ·  24  ·  2</text>
+    <text x="633" y="350" font-size="16" text-anchor="end">670.65  ·  384  ·  13</text>
     <rect x="654" y="340" width="60.28" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="350" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">6.85×</text>
     <text x="22" y="387" font-size="16">8 个不同参数</text>
-    <text x="449" y="387" font-size="16" text-anchor="end">156.70  ·  2</text>
-    <text x="633" y="387" font-size="16" text-anchor="end">1,152.50  ·  21</text>
+    <text x="449" y="387" font-size="16" text-anchor="end">156.70  ·  40  ·  2</text>
+    <text x="633" y="387" font-size="16" text-anchor="end">1,152.50  ·  528  ·  21</text>
     <rect x="654" y="377" width="64.68" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="387" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">7.35×</text>
     <text x="22" y="424" font-size="16">16 个不同参数</text>
-    <text x="449" y="424" font-size="16" text-anchor="end">257.10  ·  3</text>
-    <text x="633" y="424" font-size="16" text-anchor="end">2,015.50  ·  37</text>
+    <text x="449" y="424" font-size="16" text-anchor="end">257.10  ·  136  ·  3</text>
+    <text x="633" y="424" font-size="16" text-anchor="end">2,015.50  ·  816  ·  37</text>
     <rect x="654" y="414" width="68.99" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="424" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">7.84×</text>
     <text x="22" y="461" font-size="16">32 个不同参数</text>
-    <text x="449" y="461" font-size="16" text-anchor="end">470.55  ·  3</text>
-    <text x="633" y="461" font-size="16" text-anchor="end">3,877.00  ·  70</text>
+    <text x="449" y="461" font-size="16" text-anchor="end">470.55  ·  264  ·  3</text>
+    <text x="633" y="461" font-size="16" text-anchor="end">3,877.00  ·  1,520  ·  70</text>
     <rect x="654" y="451" width="72.51" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="461" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">8.24×</text>
     <text x="22" y="498" font-size="16">同一参数重复 16 次</text>
-    <text x="449" y="498" font-size="16" text-anchor="end">265.55  ·  3</text>
-    <text x="633" y="498" font-size="16" text-anchor="end">2,004.00  ·  37</text>
+    <text x="449" y="498" font-size="16" text-anchor="end">265.55  ·  136  ·  3</text>
+    <text x="633" y="498" font-size="16" text-anchor="end">2,004.00  ·  816  ·  37</text>
     <rect x="654" y="488" width="66.44" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="498" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">7.55×</text>
     <rect x="0" y="517" width="840" height="29" fill="#303944"/>
     <text x="22" y="537" font-size="15" font-weight="650" fill="#c9e4ff">静态查找与复数  ·  3 轮中位数</text>
     <text x="22" y="572" font-size="16">重复读取同一静态键</text>
-    <text x="449" y="572" font-size="16" text-anchor="end">12.9  ·  0</text>
-    <text x="633" y="572" font-size="16" text-anchor="end">116.8  ·  0</text>
+    <text x="449" y="572" font-size="16" text-anchor="end">12.9  ·  0  ·  0</text>
+    <text x="633" y="572" font-size="16" text-anchor="end">116.8  ·  0  ·  0</text>
     <rect x="654" y="562" width="79.64" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="572" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">9.05×</text>
     <text x="22" y="609" font-size="16">轮换读取 1,024 个静态键</text>
-    <text x="449" y="609" font-size="16" text-anchor="end">15.8  ·  0</text>
-    <text x="633" y="609" font-size="16" text-anchor="end">125.8  ·  0</text>
+    <text x="449" y="609" font-size="16" text-anchor="end">15.8  ·  0  ·  0</text>
+    <text x="633" y="609" font-size="16" text-anchor="end">125.8  ·  0  ·  0</text>
     <rect x="654" y="599" width="70.05" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="609" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">7.96×</text>
     <text x="22" y="646" font-size="16">英文复数（数量为 7）</text>
-    <text x="449" y="646" font-size="16" text-anchor="end">81.2  ·  2</text>
-    <text x="633" y="646" font-size="16" text-anchor="end">336.5  ·  8</text>
+    <text x="449" y="646" font-size="16" text-anchor="end">81.2  ·  16  ·  2</text>
+    <text x="633" y="646" font-size="16" text-anchor="end">336.5  ·  344  ·  8</text>
     <rect x="654" y="636" width="36.43" height="6" rx="3" fill="#62b0ff"/>
     <text x="817" y="646" font-size="16" text-anchor="end" font-weight="650" fill="#a5d2ff">4.14×</text>
   </g>

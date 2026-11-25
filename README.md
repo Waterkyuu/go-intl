@@ -17,9 +17,9 @@ A Bubble Tea model, a MyGo window, an NSGo view, a Wails app’s local Go backen
 
 ## Performance
 
-Apple M3 Pro, Go 1.27.1 (darwin/arm64). The ten interpolation cases use medians from the six-run v0.1.1 comparison. The two static lookups and the English plural retain the original three-run medians. Speedup is go-i18n time divided by go-intl time.
+Apple M3 Pro, Go 1.27.1 (darwin/arm64). The ten interpolation cases use medians from the six-run v0.1.1 comparison. The two static lookups and the English plural retain the original three-run medians. Each cell reports `ns/op · B/op · allocs/op`. Speedup is go-i18n time divided by go-intl time.
 
-<img src="./assets/benchmark.svg" width="100%" alt="13 translation benchmarks comparing go-intl and go-i18n by time, allocations, and speedup"/>
+<img src="./assets/benchmark.svg" width="100%" alt="13 translation benchmarks comparing go-intl and go-i18n by time, allocated bytes, allocation count, and speedup"/>
 
 [v0.1.1 benchmark results](https://github.com/Waterkyuu/go-intl/releases/tag/v0.1.1) · [Original benchmarks and methodology](./PERFORMANCE.md)
 

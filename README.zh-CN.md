@@ -17,9 +17,9 @@ Bubble Tea 模型、MyGo 窗口、NSGo 视图、Wails 应用的本地 Go 后端�
 
 ## 性能
 
-测试平台为 Apple M3 Pro，Go 1.27.1（darwin/arm64）。10 组插值取 v0.1.1 六轮对照测试的中位数。两组静态查找和一组英文复数沿用原图的三轮中位数。加速倍数为 go-i18n 耗时除以 go-intl 耗时。
+测试平台为 Apple M3 Pro，Go 1.27.1（darwin/arm64）。10 组插值取 v0.1.1 六轮对照测试的中位数。两组静态查找和一组英文复数沿用原图的三轮中位数。每个单元格依次显示单次耗时、分配字节数和分配次数（`ns/op · B/op · allocs/op`）。加速倍数为 go-i18n 耗时除以 go-intl 耗时。
 
-<img src="./assets/benchmark.zh-CN.svg" width="100%" alt="go-intl 与 go-i18n 在 13 个翻译场景中的耗时、分配次数及加速倍数"/>
+<img src="./assets/benchmark.zh-CN.svg" width="100%" alt="go-intl 与 go-i18n 在 13 个翻译场景中的耗时、分配字节数、分配次数及加速倍数"/>
 
 [v0.1.1 基准结果](https://github.com/Waterkyuu/go-intl/releases/tag/v0.1.1) · [原始基准数据与测试方法](./PERFORMANCE.md)
 
