@@ -1,4 +1,5 @@
 .benchmark-scroll {
+  container-type: inline-size;
   max-width: 100%;
   overflow-x: auto;
   margin-top: 1.6rem;
@@ -23,22 +24,32 @@
 
 .benchmark-results :is(th, td) {
   vertical-align: middle;
-  padding: 0.45rem 0.25rem;
-  text-align: right;
+  padding: 0.55rem clamp(0.75rem, 1.75cqi, 1.5rem);
+  text-align: center;
   border: 0;
-  border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent);
 }
 
 .benchmark-results .case-column {
   width: 26%;
 }
 
-.benchmark-results th[scope="colgroup"] {
-  text-align: center;
+.benchmark-results thead th[rowspan] {
+  vertical-align: top;
 }
 
-.benchmark-results colgroup + colgroup {
-  border-left: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+.benchmark-results colgroup:nth-of-type(2) {
+  background-color: color-mix(
+    in srgb,
+    var(--sl-color-text-accent, #85c4ff) 6%,
+    transparent
+  );
+}
+
+.benchmark-results thead tr:nth-child(2) th {
+  font-size: 0.82em;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .benchmark-results th[scope="row"],
@@ -49,7 +60,7 @@
 
 .benchmark-results tbody th {
   font-weight: 400;
-  overflow-wrap: anywhere;
+  min-width: 9.5rem;
 }
 
 .benchmark-results strong {
@@ -59,7 +70,7 @@
 .benchmark-results .speedup-track {
   display: block;
   width: min(100%, 6rem);
-  margin: 0.3rem 0 0.2rem auto;
+  margin: 0.3rem auto 0.2rem;
   background: color-mix(in srgb, currentColor 12%, transparent);
 }
 
@@ -70,7 +81,13 @@
   background: var(--sl-color-text-accent, #85c4ff);
 }
 
-@media (max-width: 36rem) {
+@container (min-width: 56rem) {
+  .benchmark-results table {
+    table-layout: fixed;
+  }
+}
+
+@container (max-width: 48rem) {
   .benchmark-results table {
     font-size: 0.84rem;
   }
