@@ -1,6 +1,6 @@
 ---
 title: Performance
-description: Compare go-intl and go-i18n lookup, interpolation, and plural benchmarks in ns/op and allocations per call.
+description: Compare go-intl and go-i18n lookup, interpolation, and plural benchmarks by time, allocated bytes, and allocation count.
 sidebar:
   order: 6
 ---
@@ -9,7 +9,7 @@ import BenchmarkResults from "../../../components/BenchmarkResults";
 
 ## Rendering benchmarks
 
-Each cell reports median translation time in nanoseconds and allocations per call on an Apple M3 Pro with Go 1.27.1 (darwin/arm64). Speedup is go-i18n time divided by go-intl time.
+Each cell reports median translation time (ns/op), allocated bytes (B/op), and allocation count (allocs/op) on an Apple M3 Pro with Go 1.27.1 (darwin/arm64). Speedup is go-i18n time divided by go-intl time.
 
 <BenchmarkResults />
 

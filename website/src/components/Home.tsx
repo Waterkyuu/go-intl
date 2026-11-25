@@ -46,8 +46,9 @@ export default function Home({ guides }: { guides: GuideLink[] }) {
             Translation benchmarks
           </h2>
           <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted">
-            Median nanoseconds per English translation and allocations per call.
-            Speedup is go-i18n time divided by go-intl time.
+            Median time (ns/op), allocated bytes (B/op), and allocation count
+            (allocs/op) per English translation. Speedup is go-i18n time divided
+            by go-intl time.
           </p>
           <BenchmarkResults />
           <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
