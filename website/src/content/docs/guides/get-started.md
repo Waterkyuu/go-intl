@@ -10,7 +10,7 @@ sidebar:
 In a Go module using Go 1.25 or later, add the library to your dependencies.
 
 ```sh
-go get github.com/waterkyuu/go-intl@v0.1.0
+go get github.com/waterkyuu/go-intl
 ```
 
 ## Render your first message

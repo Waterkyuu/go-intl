@@ -8,7 +8,7 @@ sidebar:
 ## Install the CLI
 
 ```sh
-go install github.com/waterkyuu/go-intl/cmd/go-intl@v0.1.0
+go install github.com/waterkyuu/go-intl/cmd/go-intl@latest
 ```
 
 ## Extract messages

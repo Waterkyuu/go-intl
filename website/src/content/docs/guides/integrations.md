@@ -14,7 +14,7 @@ t := catalog.Translations("es")
 title := t("Inbox.title")
 ```
 
-The [client examples](https://github.com/Waterkyuu/go-intl/tree/v0.1.0/examples/clients) share English and Spanish definitions. From a repository checkout, run the example for your framework. The example module requires Go 1.27.3 or later.
+The [client examples](https://github.com/Waterkyuu/go-intl/tree/main/examples/clients) share English and Spanish definitions. From a repository checkout, run the example for your framework. The example module requires Go 1.27.3 or later.
 
 ```sh
 cd examples/clients
