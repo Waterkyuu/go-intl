@@ -23,6 +23,8 @@ Apple M3 Pro, Go 1.27.1 (darwin/arm64). The ten interpolation cases use medians 
 
 [v0.1.1 benchmark results](https://github.com/Waterkyuu/go-intl/releases/tag/v0.1.1) · [Original benchmarks and methodology](./PERFORMANCE.md)
 
+[The design behind go-intl](https://waterkyuu.hashnode.dev/the-definitive-answer-to-internationalization-in-go-behind-go-intl-s-high-performance-design)
+
 ## Get started
 
 The core package requires Go 1.25 or later. To try the example in a new module, run the commands below. In an existing Go module, run just the `go get` command.

@@ -23,6 +23,8 @@ Bubble Tea 模型、MyGo 窗口、NSGo 视图、Wails 应用的本地 Go 后端�
 
 [v0.1.1 基准结果](https://github.com/Waterkyuu/go-intl/releases/tag/v0.1.1) · [原始基准数据与测试方法](./PERFORMANCE.md)
 
+[go-intl 背后的设计思路](https://waterkyuu.hashnode.dev/the-definitive-answer-to-internationalization-in-go-behind-go-intl-s-high-performance-design)
+
 ## 快速开始
 
 核心库需要 Go 1.25 或更高版本。运行以下命令创建示例模块。如果项目已有 `go.mod`，在项目目录执行最后一行 `go get` 即可。
