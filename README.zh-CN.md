@@ -15,6 +15,8 @@ t("Inbox.title") // "Inbox"
 
 Bubble Tea 模型、MyGo 窗口、NSGo 视图、Wails 应用的本地 Go 后端和 HTTP 处理函数都可以各自选择语言，共享同一个只读的翻译目录。
 
+使用 [go-intl CLI](#翻译目录-cli) 提取、校验和合并翻译目录。
+
 ## 性能
 
 测试平台为 Apple M3 Pro，Go 1.27.1（darwin/arm64）。10 组插值取 v0.1.1 六轮对照测试的中位数。两组静态查找和一组英文复数沿用原图的三轮中位数。每个单元格依次显示单次耗时、分配字节数和分配次数（`ns/op · B/op · allocs/op`）。加速倍数为 go-i18n 耗时除以 go-intl 耗时。
@@ -177,19 +179,30 @@ func Inbox(catalog *intl.Catalog) http.HandlerFunc {
 
 用 `locale.RightToLeft()` 判断当前语言和书写系统是否需要从右向左布局。
 
-## 翻译目录工具
+<a name="翻译目录工具"></a>
+
+## 翻译目录 CLI
+
+使用 Go 1.25 或更高版本安装 `go-intl` 命令。
+
+```sh
+go install github.com/waterkyuu/go-intl/cmd/go-intl@latest
+go-intl --help
+```
 
 从仓库根目录执行以下命令，可以用客户端示例中的英西双语翻译试用提取、检查和合并。
 
 ```sh
 catalogs=$(mktemp -d)
-go run ./cmd/go-intl extract -locale en ./examples/clients/internal/counter > "$catalogs/en.json"
-go run ./cmd/go-intl extract -locale es ./examples/clients/internal/counter > "$catalogs/es.json"
-go run ./cmd/go-intl check -base "$catalogs/en.json" "$catalogs/es.json"
-go run ./cmd/go-intl merge -base "$catalogs/en.json" "$catalogs/es.json"
+go-intl extract -locale en ./examples/clients/internal/counter > "$catalogs/en.json"
+go-intl extract -locale es ./examples/clients/internal/counter > "$catalogs/es.json"
+go-intl check -base "$catalogs/en.json" "$catalogs/es.json"
+go-intl merge -base "$catalogs/en.json" "$catalogs/es.json"
 ```
 
-提取命令解析 Go 语法，支持导入别名。语言标签必须是字面量，翻译表必须是 `map[string]string` 字面量，其中的键和值也要写成字符串字面量。直接在程序中定义翻译时可以使用 Go 表达式。`check` 验证模板并报告缺失的键。`merge` 保留目标语言已有的翻译，用源语言文本补齐缺失的键，并将扁平 JSON 输出到标准输出。
+- `extract` 从 `intl.Define` 调用中提取翻译，支持导入别名，并将 JSON 写到标准输出。语言标签和 `map[string]string` 字面量中的键和值都必须是字符串字面量。在 Go 程序中调用 `intl.Define` 时仍可传入运行时的值。
+- `check` 校验消息模板。目录无效或缺少基准目录中的键时返回非零退出码，可在 CI 中检查翻译是否完整。
+- `merge` 用源语言文本补齐缺失的键，保留已有译文，并将扁平 JSON 写到标准输出。
 
 ## 运行客户端和服务端示例
 

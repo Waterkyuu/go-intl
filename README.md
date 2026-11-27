@@ -15,6 +15,8 @@ t("Inbox.title") // "Inbox"
 
 A Bubble Tea model, a MyGo window, an NSGo view, a Wails app’s local Go backend, and an HTTP handler can each select a language from the same immutable catalog.
 
+Use the [go-intl CLI](#catalog-cli) to extract, check and merge translation catalogs.
+
 ## Performance
 
 Apple M3 Pro, Go 1.27.1 (darwin/arm64). The ten interpolation cases use medians from the six-run v0.1.1 comparison. The two static lookups and the English plural retain the original three-run medians. Each cell reports `ns/op · B/op · allocs/op`. Speedup is go-i18n time divided by go-intl time.
@@ -177,19 +179,30 @@ Standalone locale helpers include `Number`, `Percent`, `Currency`, `Date`, `Time
 
 Use `locale.RightToLeft()` to choose the layout direction for the selected language and script.
 
-## Catalog tooling
+<a name="catalog-tooling"></a>
 
-From the repository root, try all three commands against the catalogs shared by the client examples.
+## Catalog CLI
+
+Install the `go-intl` command with Go 1.25 or later.
+
+```sh
+go install github.com/waterkyuu/go-intl/cmd/go-intl@latest
+go-intl --help
+```
+
+From the repository root, try all three commands with the English and Spanish messages shared by the client examples.
 
 ```sh
 catalogs=$(mktemp -d)
-go run ./cmd/go-intl extract -locale en ./examples/clients/internal/counter > "$catalogs/en.json"
-go run ./cmd/go-intl extract -locale es ./examples/clients/internal/counter > "$catalogs/es.json"
-go run ./cmd/go-intl check -base "$catalogs/en.json" "$catalogs/es.json"
-go run ./cmd/go-intl merge -base "$catalogs/en.json" "$catalogs/es.json"
+go-intl extract -locale en ./examples/clients/internal/counter > "$catalogs/en.json"
+go-intl extract -locale es ./examples/clients/internal/counter > "$catalogs/es.json"
+go-intl check -base "$catalogs/en.json" "$catalogs/es.json"
+go-intl merge -base "$catalogs/en.json" "$catalogs/es.json"
 ```
 
-Extraction reads Go syntax and supports import aliases. It expects a literal language tag and a `map[string]string` literal with string keys and values. Runtime Go definitions may use any Go expression. The check command validates patterns and reports missing keys. Merge keeps existing translations and fills missing keys with source text, writing flat JSON to standard output.
+- `extract` reads `intl.Define` calls, including calls through an import alias, and writes JSON to standard output. The language tag and the keys and values of the `map[string]string` literal must be string literals. Go code can still call `intl.Define` with runtime values.
+- `check` validates message patterns and exits with a nonzero status if a catalog is invalid or missing keys from the base catalog. Run it in CI to catch incomplete translations.
+- `merge` fills missing keys with source text, preserves existing translations and writes flat JSON to standard output.
 
 ## Runnable integrations
 
